@@ -1,0 +1,4 @@
+[core]
+    remote = aws_s3
+['remote "aws_s3"']
+    url = s3://dvc-remla24-02/data
