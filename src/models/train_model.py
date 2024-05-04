@@ -3,7 +3,7 @@ Train models for predictions.
 """
 
 from joblib import dump, load
-from define_model import _get_parameters
+from src.models.define_model import _get_parameters
 
 
 def main():
