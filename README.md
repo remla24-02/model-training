@@ -22,6 +22,12 @@ cd model
 poetry install --no-root
 ```
 
+This cloned the repository and installed all the packages into an environment.
+Next, open a new shell for the environment with the following command:
+``` console
+poetry shell
+```
+
 The data to be used during the pipleline is automatically downloaded for the remote Bucket during the pipeline.
 To run the pipeline, do:
 ``` console
