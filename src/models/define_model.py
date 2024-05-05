@@ -2,8 +2,8 @@
 Define models for predictions.
 """
 
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Embedding, Conv1D, MaxPooling1D, Flatten
+from keras.models import Sequential  # type: ignore
+from keras.layers import Dense, Dropout, Embedding, Conv1D, MaxPooling1D, Flatten  # type: ignore
 from joblib import dump, load
 
 
@@ -25,7 +25,7 @@ def _get_parameters():
 
 
 def main():
-    char_index = load('output/char_index.joblib')
+    char_index = load('data/preprocessed/char_index.joblib')
     params = _get_parameters()
 
     # Define models for training
