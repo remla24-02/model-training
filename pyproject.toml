@@ -1,8 +1,10 @@
 [tool.poetry]
-name = "model"
-version = "0.0.1"
-description = ""
-authors = ["Your Name <you@example.com>"]
+name = "remlaG2"
+version = "0.0.2"
+description = "An AI model that detects phising using a CNN."
+authors = ["Rodin Haker <R.Haker@student.tudelft.nl>", "Arjan Hasami <A.Hasami@student.tudelft.nl>",
+    "Nada Mouman <N.Mouman@student.tudelft.nl>", "Thijs Penning <T.J.Penning@student.tudelft.nl>"]
+license = "Apache-2.0"
 readme = "README.md"
 
 [tool.poetry.dependencies]
