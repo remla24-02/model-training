@@ -19,8 +19,10 @@ Approved PR:
     - Split up original code
 
 Created PR: https://github.com/remla24-02/model/pull/1  
-Approved PR: Rodin Haker
+Approved PR: https://github.com/remla24-02/model/pull/2
 
 -- Thijs Penning: --  
-Created PR:   
+- Completed the Poetry environment config information
+
+Created PR: https://github.com/remla24-02/model/pull/3
 Approved PR: 
