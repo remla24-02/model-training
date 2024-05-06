@@ -9,7 +9,12 @@ Created PR: https://github.com/remla24-02/model/pull/2
 Approved PR: 
 
 -- Arjan Hasami: --  
-Created PR:   
+- Setup organization, repo and basic repo structure
+- Moved the notebook into .py file
+- Created requirements.txt
+- Created GH Actions pipeline for pylint
+
+Created PR: https://github.com/remla24-02/model/pull/4
 Approved PR: 
 
 -- Nada Mouman: --  
@@ -23,6 +28,8 @@ Approved PR: https://github.com/remla24-02/model/pull/2
 
 -- Thijs Penning: --  
 - Completed the Poetry environment config information
+- Installed Pylint
+- Fixed initial smells reported by Pylint
 
 Created PR: https://github.com/remla24-02/model/pull/3
 Approved PR: 
