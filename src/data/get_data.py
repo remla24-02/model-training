@@ -30,7 +30,7 @@ def main():
 
     for dvc_file in dvc_files:
         with open(os.path.join('data', 'raw', dvc_file), 'r') as file:
-            file_name = file.name.split('.')[0].split("/")[2]
+            file_name = os.path.splitext(os.path.basename(file.name))[0]
             md5_hash = file.read()
             md5_hash = md5_hash.split(' ')[2]
             key = 'data/files/md5/' + md5_hash[:2] + '/' + md5_hash[2:]
@@ -38,7 +38,7 @@ def main():
 
     for name, key in files.items():
         download_data(bucket_name, key, os.path.join(
-            'data', 'raw', f"{name}.txt"))
+            'data', 'raw', f"{name}"))
 
 
 if __name__ == '__main__':

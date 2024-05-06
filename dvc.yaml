@@ -24,10 +24,20 @@ stages:
       - data/raw/train.txt
       - data/raw/test.txt
       - data/raw/val.txt
+    outs:
+      - data/preprocessed/preprocessed_x_train.joblib
+      - data/preprocessed/preprocessed_y_train.joblib
+      - data/preprocessed/preprocessed_x_test.joblib
+      - data/preprocessed/preprocessed_y_test.joblib
+      - data/preprocessed/preprocessed_x_val.joblib
+      - data/preprocessed/preprocessed_y_val.joblib
+      - data/preprocessed/char_index.joblib
   define_model:
     cmd: python src/models/define_model.py
     deps:
       - data/preprocessed/char_index.joblib
+    outs:
+      - models/defined_model.joblib
   train_model:
     cmd: python src/models/train_model.py
     deps:

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "remlaG2"
-version = "0.0.2"
+version = "0.0.3"
 description = "An AI model that detects phising using a CNN."
 authors = ["Rodin Haker <R.Haker@student.tudelft.nl>", "Arjan Hasami <A.Hasami@student.tudelft.nl>",
     "Nada Mouman <N.Mouman@student.tudelft.nl>", "Thijs Penning <T.J.Penning@student.tudelft.nl>"]
@@ -11,10 +11,14 @@ readme = "README.md"
 python = "^3.12"
 absl-py = "2.1.0"
 astunparse = "1.6.3"
+boto3 = "1.34.69"
 certifi = "2024.2.2"
 charset-normalizer = "3.3.2"
 contourpy = "1.2.1"
 cycler = "0.12.1"
+dvc = "^3.50.1"
+dvclive = "^3.46.0"
+dvc-s3 = "^3.2.0"
 flatbuffers = "24.3.25"
 fonttools = "4.51.0"
 gast = "0.5.4"
@@ -53,7 +57,14 @@ setuptools = "69.5.1"
 six = "1.16.0"
 tensorboard = "2.16.2"
 tensorboard-data-server = "0.7.2"
-tensorflow = {extras = ["and-cuda"], version = "^2.16.1"}
+tensorflow = [
+    { version = "^2.16.1", extras = ["and-cuda"], markers = "sys_platform == 'linux'" },
+    { version = "^2.16.1", markers = "sys_platform != 'linux'" }
+]
+tensorflow-intel = {version = "^2.16.1", markers = "sys_platform == 'win32'"}
+tensorrt-cu12 = {version = "^10.0.1", source = "nvidia", markers = "sys_platform == 'linux'"}
+tensorrt-cu12-bindings = {version = "^10.0.1", source = "nvidia", markers = "sys_platform == 'linux'"}
+tensorrt-cu12-libs = {version = "^10.0.1", source = "nvidia", markers = "sys_platform == 'linux'"}
 termcolor = "2.4.0"
 threadpoolctl = "3.5.0"
 typing_extensions = "4.11.0"
@@ -62,20 +73,14 @@ urllib3 = "2.2.1"
 Werkzeug = "3.0.2"
 wheel = "0.43.0"
 wrapt = "1.16.0"
-dvc = "^3.50.1"
-dvc-s3 = "^3.2.0"
-boto3 = "1.34.69"
-dvclive = "^3.46.0"
-tensorrt-cu12 = {version = "^10.0.1", source = "nvidia"}
-tensorrt-cu12-libs = {version = "^10.0.1", source = "nvidia"}
-tensorrt-cu12-bindings = {version = "^10.0.1", source = "nvidia"}
-
-
 
 [[tool.poetry.source]]
 name = "nvidia"
 url = "https://pypi.nvidia.com/"
 priority = "supplemental"
+
+[tool.poetry.group.dev.dependencies]
+pylint = "^3.1.0"
 
 [build-system]
 requires = ["poetry-core"]

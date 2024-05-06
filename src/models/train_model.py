@@ -3,7 +3,14 @@ Train models for predictions.
 """
 
 from joblib import dump, load
-from models.define_model import _get_parameters
+
+from pathlib import Path
+import sys
+
+path_root = Path(__file__).parents[2]
+sys.path.append(str(path_root))
+
+from src.models.define_model import _get_parameters
 
 
 def main():
