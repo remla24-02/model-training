@@ -52,6 +52,7 @@ six = "1.16.0"
 tensorboard = "2.16.2"
 tensorboard-data-server = "0.7.2"
 tensorflow = {extras = ["and-cuda"], version = "^2.16.1"}
+tensorflow-intel = {version = "^2.16.1", markers = "sys_platform == 'win32'"}
 termcolor = "2.4.0"
 threadpoolctl = "3.5.0"
 typing_extensions = "4.11.0"
