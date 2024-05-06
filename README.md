@@ -93,6 +93,30 @@ $ tree
     └── models
         ├── define_model.py     # <-- Creates the model
         ├── get_model.py        # <-- Download model from Bucket
-        ├── predict_model.py    # <-- Evaluates the model
+        ├── evaluate_model.py    # <-- Evaluates the model
         └── train_model.py      # <-- Trains the model
 ```
+
+## Pipeline stages
+
+- `get_data`: Downloads the raw data from remote AWS S3 Bucket
+- `preprocess`: Preprocessed the data for training. Outputs tokenized and encoded data files in `data/preprocessed` in the root directory.
+- `define_model`: Creates the untrained model and stores the file in `models` in the root directory.
+- `train_model`: Trains the defined model and stores the file in `models` in the root directory. 
+- `evaluate_model`: Evaluates the models performance and saves the metrics in the `evaluation` folder.
+
+## Plots
+To get interactive plots you can run:
+
+``` console
+dvc plots show
+```
+
+### Confusion Matric
+![](https://github.com/remla24-02/model/blob/data-version-control/images/cm.png)
+
+### ROC Curve
+![](https://github.com/remla24-02/model/blob/data-version-control/images/roc.png)
+
+### Precision-Recall
+![](https://github.com/remla24-02/model/blob/data-version-control/images/prc.png)
