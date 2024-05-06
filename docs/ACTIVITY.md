@@ -6,11 +6,11 @@
 - Added Introduction, Prerequisites, Installation and Project structure to README
 
 Created PR: https://github.com/remla24-02/model/pull/2  
-Approved PR: 
+Approved PR: https://github.com/remla24-02/model/pull/1
 
 -- Arjan Hasami: --  
 Created PR:   
-Approved PR: 
+Approved PR: https://github.com/remla24-02/model/pull/2
 
 -- Nada Mouman: --  
 - Created initial project structure
@@ -19,8 +19,8 @@ Approved PR:
     - Split up original code
 
 Created PR: https://github.com/remla24-02/model/pull/1  
-Approved PR: Rodin Haker
+Approved PR: https://github.com/remla24-02/model/pull/2
 
 -- Thijs Penning: --  
 Created PR:   
-Approved PR: 
+Approved PR: https://github.com/remla24-02/model/pull/2
