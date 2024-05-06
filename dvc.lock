@@ -1,0 +1,98 @@
+schema: '2.0'
+stages:
+  get_data:
+    cmd: python src/data/get_data.py
+  preprocess:
+    cmd: python src/data/data_preprocessing.py
+    deps:
+    - path: data/raw/test.txt
+      hash: md5
+      md5: a1cab28ad8554fd9269d31e5708469d0
+      size: 32724891
+    - path: data/raw/train.txt
+      hash: md5
+      md5: 13fd241a41370119612d5b00b0433009
+      size: 93921671
+    - path: data/raw/val.txt
+      hash: md5
+      md5: 7b1e28b1e91582c6f36e85517c3cc6ee
+      size: 46258330
+    outs:
+    - path: data/preprocessed/char_index.joblib
+      hash: md5
+      md5: 941dc7e5461b0a429941866a00102b8c
+      size: 444
+    - path: data/preprocessed/preprocessed_x_test.joblib
+      hash: md5
+      md5: 9efc054fb130a7a7262ede3e002dbff8
+      size: 291359441
+    - path: data/preprocessed/preprocessed_x_train.joblib
+      hash: md5
+      md5: bf8f14fe123c36f899b44ad257c01b68
+      size: 836619441
+    - path: data/preprocessed/preprocessed_x_val.joblib
+      hash: md5
+      md5: 56b9176994f90b75f32286ca276f8b87
+      size: 412064241
+    - path: data/preprocessed/preprocessed_y_test.joblib
+      hash: md5
+      md5: 37a1e10ea0bcccd0466a379ccf7483db
+      size: 1457037
+    - path: data/preprocessed/preprocessed_y_train.joblib
+      hash: md5
+      md5: 1c71e546510693ba605e8ef098fc73e2
+      size: 8366433
+    - path: data/preprocessed/preprocessed_y_val.joblib
+      hash: md5
+      md5: 39eec3c4fe3d51d4e9990276b74b30be
+      size: 2060561
+  define_model:
+    cmd: python src/models/define_model.py
+    deps:
+    - path: data/preprocessed/char_index.joblib
+      hash: md5
+      md5: 941dc7e5461b0a429941866a00102b8c
+      size: 444
+    outs:
+    - path: models/defined_model.joblib
+      hash: md5
+      md5: 46fdc7cf3cab79af69513710e007c122
+      size: 50514
+  train_model:
+    cmd: python src/models/train_model.py
+    deps:
+    - path: data/preprocessed/preprocessed_x_train.joblib
+      hash: md5
+      md5: bf8f14fe123c36f899b44ad257c01b68
+      size: 836619441
+    - path: data/preprocessed/preprocessed_x_val.joblib
+      hash: md5
+      md5: 56b9176994f90b75f32286ca276f8b87
+      size: 412064241
+    - path: data/preprocessed/preprocessed_y_train.joblib
+      hash: md5
+      md5: 1c71e546510693ba605e8ef098fc73e2
+      size: 8366433
+    - path: data/preprocessed/preprocessed_y_val.joblib
+      hash: md5
+      md5: 39eec3c4fe3d51d4e9990276b74b30be
+      size: 2060561
+    - path: models/defined_model.joblib
+      hash: md5
+      md5: 46fdc7cf3cab79af69513710e007c122
+      size: 50514
+  evaluate_model:
+    cmd: python src/models/evaluate_model.py
+    deps:
+    - path: data/preprocessed/preprocessed_x_test.joblib
+      hash: md5
+      md5: 9efc054fb130a7a7262ede3e002dbff8
+      size: 291359441
+    - path: data/preprocessed/preprocessed_y_test.joblib
+      hash: md5
+      md5: 37a1e10ea0bcccd0466a379ccf7483db
+      size: 1457037
+    - path: models/trained_model.joblib
+      hash: md5
+      md5: 8df32b50c3e19897d9b981ae186dfd78
+      size: 5472586
