@@ -1,35 +1,16 @@
 # A1:
 -- Rodin Haker: --  
-- Implemented DVC  
-- Small project restructuring
-- Added pyproject.toml
-- Added Introduction, Prerequisites, Installation and Project structure to README
-
 Created PR: https://github.com/remla24-02/model/pull/2  
-Approved PR: 
+Approved PR: https://github.com/remla24-02/model/pull/1
 
 -- Arjan Hasami: --  
-- Setup organization, repo and basic repo structure
-- Moved the notebook into .py file
-- Created requirements.txt
-- Created GH Actions pipeline for pylint
-
-Created PR: https://github.com/remla24-02/model/pull/4
-Approved PR: 
+Created PR:   
+Approved PR: https://github.com/remla24-02/model/pull/2
 
 -- Nada Mouman: --  
-- Created initial project structure
-    - Created repo
-    - Split up data, models and src folders
-    - Split up original code
-
 Created PR: https://github.com/remla24-02/model/pull/1  
 Approved PR: https://github.com/remla24-02/model/pull/2
 
 -- Thijs Penning: --  
-- Completed the Poetry environment config information
-- Installed Pylint
-- Fixed initial smells reported by Pylint
-
 Created PR: https://github.com/remla24-02/model/pull/3
-Approved PR: 
+Approved PR: https://github.com/remla24-02/model/pull/2
