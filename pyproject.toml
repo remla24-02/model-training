@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "remlaG2"
-version = "0.0.2"
+version = "0.0.3"
 description = "An AI model that detects phising using a CNN."
 authors = ["Rodin Haker <R.Haker@student.tudelft.nl>", "Arjan Hasami <A.Hasami@student.tudelft.nl>",
     "Nada Mouman <N.Mouman@student.tudelft.nl>", "Thijs Penning <T.J.Penning@student.tudelft.nl>"]
@@ -70,12 +70,13 @@ tensorrt-cu12 = {version = "^10.0.1", source = "nvidia"}
 tensorrt-cu12-libs = {version = "^10.0.1", source = "nvidia"}
 tensorrt-cu12-bindings = {version = "^10.0.1", source = "nvidia"}
 
-
-
 [[tool.poetry.source]]
 name = "nvidia"
 url = "https://pypi.nvidia.com/"
 priority = "supplemental"
+
+[tool.poetry.group.dev.dependencies]
+pylint = "^3.1.0"
 
 [build-system]
 requires = ["poetry-core"]
