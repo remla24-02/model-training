@@ -3,7 +3,6 @@ Download and extract training, testing and validation data.
 """
 
 import boto3
-import os
 
 
 def download_data(bucket_name, file_name, output_file):
@@ -21,7 +20,7 @@ def main():
     bucket_name = 'dvc-remla24-02'
 
     # read the .dvc file in models folder
-    with open('models/trained_model.joblib.dvc', 'r') as file:
+    with open('models/trained_model.joblib.dvc', 'r', encoding='utf-8') as file:
         md5_hash = file.read()
         md5_hash = md5_hash.split(' ')[2]
         key = 'data/files/md5/' + md5_hash[:2] + '/' + md5_hash[2:]
