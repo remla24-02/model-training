@@ -2,10 +2,10 @@
 Train models for predictions.
 """
 
-from joblib import dump, load
-
 from pathlib import Path
 import sys
+
+from joblib import dump, load
 
 path_root = Path(__file__).parents[2]
 sys.path.append(str(path_root))
