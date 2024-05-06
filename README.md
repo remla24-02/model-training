@@ -1,14 +1,15 @@
-[![DVC-metrics](https://img.shields.io/badge/dynamic/json?style=flat-square&colorA=grey&colorB=F46737&label=Accuracy&url=https://raw.githubusercontent.com/remla24-02/model/data-version-control/evaluation/metrics.json&query=accuracy)](https://raw.githubusercontent.com/remla24-02/model/data-version-control/evaluation/metrics.json)  
-[![DVC-metrics](https://img.shields.io/badge/dynamic/json?style=flat-square&colorA=grey&colorB=F46737&label=Precision&url=https://raw.githubusercontent.com/remla24-02/model/data-version-control/evaluation/metrics.json&query=precision)](https://raw.githubusercontent.com/remla24-02/model/data-version-control/evaluation/metrics.json)  
-[![DVC-metrics](https://img.shields.io/badge/dynamic/json?style=flat-square&colorA=grey&colorB=F46737&label=Recall&url=https://raw.githubusercontent.com/remla24-02/model/data-version-control/evaluation/metrics.json&query=recall)](https://raw.githubusercontent.com/remla24-02/model/data-version-control/evaluation/metrics.json)  
-[![DVC-metrics](https://img.shields.io/badge/dynamic/json?style=flat-square&colorA=grey&colorB=F46737&label=F1&url=https://raw.githubusercontent.com/remla24-02/model/data-version-control/evaluation/metrics.json&query=f1)](https://raw.githubusercontent.com/remla24-02/model/data-version-control/evaluation/metrics.json)  
-[![DVC-metrics](https://img.shields.io/badge/dynamic/json?style=flat-square&colorA=grey&colorB=F46737&label=ROC_AUC&url=https://raw.githubusercontent.com/remla24-02/model/data-version-control/evaluation/metrics.json&query=roc_auc)](https://raw.githubusercontent.com/remla24-02/model/data-version-control/evaluation/metrics.json)
+[![DVC-metrics](https://img.shields.io/badge/dynamic/json?style=flat-square&colorA=grey&colorB=99ff99&label=Accuracy&url=https://raw.githubusercontent.com/remla24-02/model/data-version-control/evaluation/metrics.json&query=accuracy)](https://raw.githubusercontent.com/remla24-02/model/data-version-control/evaluation/metrics.json)  
+[![DVC-metrics](https://img.shields.io/badge/dynamic/json?style=flat-square&colorA=grey&colorB=99ff99&label=Precision&url=https://raw.githubusercontent.com/remla24-02/model/data-version-control/evaluation/metrics.json&query=precision)](https://raw.githubusercontent.com/remla24-02/model/data-version-control/evaluation/metrics.json)  
+[![DVC-metrics](https://img.shields.io/badge/dynamic/json?style=flat-square&colorA=grey&colorB=99ff99&label=Recall&url=https://raw.githubusercontent.com/remla24-02/model/data-version-control/evaluation/metrics.json&query=recall)](https://raw.githubusercontent.com/remla24-02/model/data-version-control/evaluation/metrics.json)  
+[![DVC-metrics](https://img.shields.io/badge/dynamic/json?style=flat-square&colorA=grey&colorB=99ff99&label=F1&url=https://raw.githubusercontent.com/remla24-02/model/data-version-control/evaluation/metrics.json&query=f1)](https://raw.githubusercontent.com/remla24-02/model/data-version-control/evaluation/metrics.json)  
+[![DVC-metrics](https://img.shields.io/badge/dynamic/json?style=flat-square&colorA=grey&colorB=99ff99&label=ROC_AUC&url=https://raw.githubusercontent.com/remla24-02/model/data-version-control/evaluation/metrics.json&query=roc_auc)](https://raw.githubusercontent.com/remla24-02/model/data-version-control/evaluation/metrics.json)
 
 
 
 # REMLA Team 2 Model
 This is Team 2's repository for Assignment A1 for Release Engineering for Machine Learning Applications 2023/24.  
-It contains a DVC pipeline with public download access to a AWS S3 Bucket.
+It contains a DVC pipeline with public download access to a AWS S3 Bucket.  
+The metrics displayed in the badges above can be found back in the evaluation folder (specifically [here](https://github.com/remla24-02/model/blob/data-version-control/evaluation/metrics.json)).
 
 ## Prerequisites 
 Python 3.12 is required to run the code.  
@@ -92,6 +93,30 @@ $ tree
     └── models
         ├── define_model.py     # <-- Creates the model
         ├── get_model.py        # <-- Download model from Bucket
-        ├── predict_model.py    # <-- Evaluates the model
+        ├── evaluate_model.py    # <-- Evaluates the model
         └── train_model.py      # <-- Trains the model
 ```
+
+## Pipeline stages
+
+- `get_data`: Downloads the raw data from remote AWS S3 Bucket
+- `preprocess`: Preprocessed the data for training. Outputs tokenized and encoded data files in `data/preprocessed` in the root directory.
+- `define_model`: Creates the untrained model and stores the file in `models` in the root directory.
+- `train_model`: Trains the defined model and stores the file in `models` in the root directory. 
+- `evaluate_model`: Evaluates the models performance and saves the metrics in the `evaluation` folder.
+
+## Plots
+To get interactive plots you can run:
+
+``` console
+dvc plots show
+```
+
+### Confusion Matric
+![](https://github.com/remla24-02/model/blob/data-version-control/images/cm.png)
+
+### ROC Curve
+![](https://github.com/remla24-02/model/blob/data-version-control/images/roc.png)
+
+### Precision-Recall
+![](https://github.com/remla24-02/model/blob/data-version-control/images/prc.png)
