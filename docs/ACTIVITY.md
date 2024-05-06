@@ -1,16 +1,26 @@
 # A1:
--- Rodin Haker: --
-Created PR: 
-Approved PR: 
+-- Rodin Haker: --  
+- Implemented DVC  
+- Small project restructuring
+- Added pyproject.toml
+- Added Introduction, Prerequisites, Installation and Project structure to README
 
--- Arjan Hasami: --
-Created PR: 
-Approved PR: 
+Created PR: https://github.com/remla24-02/model/pull/2  
+Approved PR: https://github.com/remla24-02/model/pull/1
 
--- Nada Mouman: --
-Created PR: https://github.com/remla24-02/model/pull/1
-Approved PR: 
+-- Arjan Hasami: --  
+Created PR:   
+Approved PR: https://github.com/remla24-02/model/pull/2
 
--- Thijs Penning: --
-Created PR: 
-Approved PR: 
+-- Nada Mouman: --  
+- Created initial project structure
+    - Created repo
+    - Split up data, models and src folders
+    - Split up original code
+
+Created PR: https://github.com/remla24-02/model/pull/1  
+Approved PR: https://github.com/remla24-02/model/pull/2
+
+-- Thijs Penning: --  
+Created PR:   
+Approved PR: https://github.com/remla24-02/model/pull/2
