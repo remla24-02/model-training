@@ -38,7 +38,7 @@ def main():
 
     for name, key in files.items():
         download_data(bucket_name, key, os.path.join(
-            'data', 'raw', f"{name}.txt"))
+            'data', 'raw', f"{name}"))
 
 
 if __name__ == '__main__':
