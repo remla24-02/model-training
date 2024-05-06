@@ -8,3 +8,4 @@ venv
 .vscode
 
 data/preprocessed/*.joblib
+dvc.lock

@@ -2,10 +2,10 @@
 Download and extract training, testing and validation data.
 """
 
+import os
 import boto3
 from botocore import UNSIGNED
 from botocore.client import Config
-import os
 
 
 def download_data(bucket_name, file_name, output_file):
@@ -29,7 +29,7 @@ def main():
     files = {}
 
     for dvc_file in dvc_files:
-        with open(os.path.join('data', 'raw', dvc_file), 'r') as file:
+        with open(os.path.join('data', 'raw', dvc_file), 'r', encoding='utf-8') as file:
             file_name = os.path.splitext(os.path.basename(file.name))[0]
             md5_hash = file.read()
             md5_hash = md5_hash.split(' ')[2]

@@ -2,8 +2,8 @@
 Define models for predictions.
 """
 
-from keras.models import Sequential  # type: ignore
-from keras.layers import Dense, Dropout, Embedding, Conv1D, MaxPooling1D, Flatten  # type: ignore
+from keras.models import Sequential  # type: ignore # pylint: disable=import-error
+from keras.layers import Dense, Dropout, Embedding, Conv1D, MaxPooling1D, Flatten  # type: ignore # pylint: disable=import-error
 from joblib import dump, load
 
 
@@ -25,13 +25,16 @@ def _get_parameters():
 
 
 def main():
+    """
+    Define the model and add the layers.
+    """
     char_index = load('data/preprocessed/char_index.joblib')
     params = _get_parameters()
 
     # Define models for training
     model = Sequential()
     voc_size = len(char_index.keys())
-    print("voc_size: {}".format(voc_size))
+    print(f'voc_size: {voc_size}')
 
     model.add(Embedding(voc_size + 1, 50))
 

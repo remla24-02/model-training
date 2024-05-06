@@ -2,15 +2,15 @@
 Train models for predictions.
 """
 
-from joblib import dump, load
-
 from pathlib import Path
 import sys
+
+from joblib import dump, load
 
 path_root = Path(__file__).parents[2]
 sys.path.append(str(path_root))
 
-from src.models.define_model import _get_parameters
+from src.models.define_model import _get_parameters  # pylint: disable=C0413
 
 
 def main():
@@ -29,12 +29,8 @@ def main():
     model.compile(loss=params['loss_function'],
                   optimizer=params['optimizer'], metrics=['accuracy'])
 
-    hist = model.fit(x_train, y_train,
-                     batch_size=params['batch_train'],
-                     epochs=params['epoch'],
-                     shuffle=True,
-                     validation_data=(x_val, y_val)
-                     )
+    model.fit(x_train, y_train, batch_size=params['batch_train'],
+              epochs=params['epoch'], shuffle=True, validation_data=(x_val, y_val))
 
     # Store trained model
     dump(model, 'models/trained_model.joblib')
