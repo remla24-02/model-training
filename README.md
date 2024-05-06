@@ -13,7 +13,12 @@ The metrics displayed in the badges above can be found back in the evaluation fo
 
 ## Prerequisites 
 Python 3.12 is required to run the code.  
-To install the required packages a pyproject.toml has been provided for use with [Poetry](https://python-poetry.org/docs/).  This has been testing using Poetry version 1.7.1.
+To install the required packages a pyproject.toml has been provided for use with [Poetry](https://python-poetry.org/docs/).
+This has been testing using Poetry version 1.7.1.
+Poetry can be installed with pip with the following command:
+``` console
+pip install poetry
+```
 
 ## Installation
 
@@ -50,6 +55,14 @@ poetry run python3 src/models/get_model.py
 ```
 
 This will download a pretrained model to the `models` folder under root.
+
+Lastly, for the code quality Pylint is used which can be run in the poetry shell as:
+
+``` console
+pylint src
+```
+
+This will show all code smells and provide a score for the codebase
 
 ### Project group specifics
 To push data to the DVC remote you need the access key id and secret and add those to the `.dvc` folder in a file called `config.local`.
