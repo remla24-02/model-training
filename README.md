@@ -1,15 +1,15 @@
-[![DVC-metrics](https://img.shields.io/badge/dynamic/json?style=flat-square&colorA=grey&colorB=99ff99&label=Accuracy&url=https://raw.githubusercontent.com/remla24-02/model/main/evaluation/metrics.json&query=accuracy)](https://raw.githubusercontent.com/remla24-02/model/data-version-control/evaluation/metrics.json)  
-[![DVC-metrics](https://img.shields.io/badge/dynamic/json?style=flat-square&colorA=grey&colorB=99ff99&label=Precision&url=https://raw.githubusercontent.com/remla24-02/model/main/evaluation/metrics.json&query=precision)](https://raw.githubusercontent.com/remla24-02/model/data-version-control/evaluation/metrics.json)  
-[![DVC-metrics](https://img.shields.io/badge/dynamic/json?style=flat-square&colorA=grey&colorB=99ff99&label=Recall&url=https://raw.githubusercontent.com/remla24-02/model/main/evaluation/metrics.json&query=recall)](https://raw.githubusercontent.com/remla24-02/model/data-version-control/evaluation/metrics.json)  
-[![DVC-metrics](https://img.shields.io/badge/dynamic/json?style=flat-square&colorA=grey&colorB=99ff99&label=F1&url=https://raw.githubusercontent.com/remla24-02/model/main/evaluation/metrics.json&query=f1)](https://raw.githubusercontent.com/remla24-02/model/data-version-control/evaluation/metrics.json)  
-[![DVC-metrics](https://img.shields.io/badge/dynamic/json?style=flat-square&colorA=grey&colorB=99ff99&label=ROC_AUC&url=https://raw.githubusercontent.com/remla24-02/model/main/evaluation/metrics.json&query=roc_auc)](https://raw.githubusercontent.com/remla24-02/model/data-version-control/evaluation/metrics.json)
+[![DVC-metrics](https://img.shields.io/badge/dynamic/json?style=flat-square&colorA=grey&colorB=99ff99&label=Accuracy&url=https://raw.githubusercontent.com/remla24-02/model-training/main/evaluation/metrics.json&query=accuracy)](https://raw.githubusercontent.com/remla24-02/model-training/main/evaluation/metrics.json)  
+[![DVC-metrics](https://img.shields.io/badge/dynamic/json?style=flat-square&colorA=grey&colorB=99ff99&label=Precision&url=https://raw.githubusercontent.com/remla24-02/model-training/main/evaluation/metrics.json&query=precision)](https://raw.githubusercontent.com/remla24-02/model-training/main/evaluation/metrics.json)  
+[![DVC-metrics](https://img.shields.io/badge/dynamic/json?style=flat-square&colorA=grey&colorB=99ff99&label=Recall&url=https://raw.githubusercontent.com/remla24-02/model-training/main/evaluation/metrics.json&query=recall)](https://raw.githubusercontent.com/remla24-02/model-training/main/evaluation/metrics.json)  
+[![DVC-metrics](https://img.shields.io/badge/dynamic/json?style=flat-square&colorA=grey&colorB=99ff99&label=F1&url=https://raw.githubusercontent.com/remla24-02/model-training/main/evaluation/metrics.json&query=f1)](https://raw.githubusercontent.com/remla24-02/model-training/main/evaluation/metrics.json)  
+[![DVC-metrics](https://img.shields.io/badge/dynamic/json?style=flat-square&colorA=grey&colorB=99ff99&label=ROC_AUC&url=https://raw.githubusercontent.com/remla24-02/model-training/main/evaluation/metrics.json&query=roc_auc)](https://raw.githubusercontent.com/remla24-02/model-training/main/evaluation/metrics.json)
 
 
 
 # REMLA Team 2 Model
 This is Team 2's repository for Assignment A1 for Release Engineering for Machine Learning Applications 2023/24.  
 It contains a DVC pipeline with public download access to a AWS S3 Bucket.  
-The metrics displayed in the badges above can be found back in the evaluation folder (specifically [here](https://github.com/remla24-02/model/blob/data-version-control/evaluation/metrics.json)).
+The metrics displayed in the badges above can be found back in the evaluation folder (specifically [here](https://github.com/remla24-02/model-training/blob/main/evaluation/metrics.json)).
 
 ## Prerequisites 
 Python 3.12 is required to run the code.  
@@ -23,7 +23,7 @@ pip install poetry
 ## Installation
 
 ``` console
-git clone https://github.com/remla24-02/model.git
+git clone https://github.com/remla24-02/model-training.git
 cd model
 poetry install --no-root
 ```
@@ -126,10 +126,10 @@ dvc plots show
 ```
 
 ### Confusion Matric
-![](https://github.com/remla24-02/model/blob/main/images/cm.png)
+![](https://github.com/remla24-02/model-training/blob/main/images/cm.png)
 
 ### ROC Curve
-![](https://github.com/remla24-02/model/blob/main/images/roc.png)
+![](https://github.com/remla24-02/model-training/blob/main/images/roc.png)
 
 ### Precision-Recall
-![](https://github.com/remla24-02/model/blob/main/images/prc.png)
+![](https://github.com/remla24-02/model-training/blob/main/images/prc.png)
