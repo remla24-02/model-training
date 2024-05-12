@@ -73,6 +73,7 @@ urllib3 = "2.2.1"
 Werkzeug = "3.0.2"
 wheel = "0.43.0"
 wrapt = "1.16.0"
+lib-ml-remla24-team02 = "^2.0.0"
 
 [[tool.poetry.source]]
 name = "nvidia"
