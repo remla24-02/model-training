@@ -18,6 +18,8 @@ def setup_training(setup_data):
     data_preprocessing.preprocess(os.path.join('data', 'raw'), preprocessed_data_path)
     define_model()
 
+    yield
+
     # Remove the preprocessed data files and the defined/trained model
     for file in os.listdir(preprocessed_data_path):
         if file != '.gitkeep':
