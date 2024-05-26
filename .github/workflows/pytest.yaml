@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  lint:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,11 +24,6 @@ jobs:
         virtualenvs-create: true
         virtualenvs-in-project: true
         installer-parallel: true
-
-    - name: Install pip
-      run: |
-        python -m ensurepip
-        python -m pip install --upgrade pip
 
     - name: Load Poetry cache
       id: load-poetry-cache
