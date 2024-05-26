@@ -1,10 +1,12 @@
 *.DS_Store
-.idea/
-
-.ipynb_checkpoints
 __pycache__/
-venv
+
+.idea/
+.ipynb_checkpoints
+.pytest_cache
 .venv
 .vscode
+
+venv
 
 data/preprocessed/*.joblib
