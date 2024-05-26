@@ -45,6 +45,7 @@ def test_train_data_ratio(setup_data):
 
 
 def test_val_data_ratio(setup_data):
+    # The legitimate and phishing should have a fair ratio and add up to the total together
     total, legitimate, phishing = get_data_ratio("val")
     assert total == legitimate + phishing
     assert 0.4 < legitimate / total < 0.6
@@ -52,6 +53,7 @@ def test_val_data_ratio(setup_data):
 
 
 def test_test_data_ratio(setup_data):
+    # The legitimate and phishing should have a fair ratio and add up to the total together
     total, legitimate, phishing = get_data_ratio("test")
     assert total == legitimate + phishing
     assert 0.4 < legitimate / total < 0.6
