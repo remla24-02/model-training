@@ -4,7 +4,7 @@ import os
 from src.data.get_data import main as get_data
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def setup_data():
     # Download the data
     get_data()
