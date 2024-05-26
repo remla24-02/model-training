@@ -25,6 +25,7 @@ jobs:
         virtualenvs-in-project: true
         installer-parallel: true
 
+#    TODO: Fix cache loading
     - name: Load Poetry cache
       id: load-poetry-cache
       uses: actions/cache@v3
@@ -40,4 +41,4 @@ jobs:
       run: |
         source .venv/bin/activate
         pytest tests/
-#        TODO: Report a metric from testing (maybe use pytest-cov)
+#        TODO: Report a metric from testing in the repository (maybe use pytest-cov)
