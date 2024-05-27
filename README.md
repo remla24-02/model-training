@@ -56,13 +56,19 @@ poetry run python3 src/models/get_model.py
 
 This will download a pretrained model to the `models` folder under root.
 
-Lastly, for the code quality Pylint is used which can be run in the poetry shell as:
+Next, for the code quality Pylint is used which can be run in the poetry shell as:
 
 ``` console
 pylint src
 ```
 
 This will show all code smells and provide a score for the codebase
+
+Lastly, all the ML tests can be run with:
+
+``` console
+pytest tests
+```
 
 ### Project group specifics
 To push data to the DVC remote you need the access key id and secret and add those to the `.dvc` folder in a file called `config.local`.

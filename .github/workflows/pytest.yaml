@@ -39,5 +39,5 @@ jobs:
     - name: Run tests
       run: |
         source .venv/bin/activate
-        pytest tests/
+        pytest tests
 #        TODO: Report a metric from testing in the repository (maybe use pytest-cov)
