@@ -13,7 +13,7 @@ sys.path.append(str(path_root))
 from src.models.define_model import _get_parameters  # pylint: disable=C0413
 
 
-def main(test_epochs=None):
+def main():
     """
     Train the defined model.
     """
@@ -25,8 +25,6 @@ def main(test_epochs=None):
     y_val = load('data/preprocessed/preprocessed_y_val.joblib')
 
     params = _get_parameters()
-    if test_epochs is not None:
-        params['epoch'] = test_epochs
 
     model.compile(loss=params['loss_function'],
                   optimizer=params['optimizer'], metrics=['accuracy'])

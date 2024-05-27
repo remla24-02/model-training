@@ -8,7 +8,6 @@ from botocore import UNSIGNED
 from botocore.client import Config
 
 
-
 def download_data(bucket_name, file_name, output_file):
     """
     Download data from S3 bucket.
