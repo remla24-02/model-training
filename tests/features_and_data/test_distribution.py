@@ -4,7 +4,7 @@ import os
 from src.data.get_data import main as get_data
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="module")
 def setup_data():
     # Download the data
     get_data()
@@ -14,7 +14,9 @@ def setup_data():
 
     # Teardown the data
     for data_type in ["train", "val", "test"]:
-        os.remove(os.path.join("data", "raw", f"{data_type}.txt"))
+        file_path = os.path.join("data", "raw", f"{data_type}.txt")
+        if os.path.exists(file_path):
+            os.remove(file_path)
 
 
 def get_data_ratio(data_type):
