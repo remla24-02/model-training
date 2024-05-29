@@ -10,3 +10,4 @@ __pycache__/
 venv
 
 data/preprocessed/*.joblib
+models/old_model.joblib
