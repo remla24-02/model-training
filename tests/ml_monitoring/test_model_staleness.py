@@ -11,18 +11,6 @@ from src.models.get_model import main as get_model
 MAX_MODEL_AGE = 60 # Maximum age of model in days before considered stale
 
 
-@pytest.fixture(scope="session")
-def setup_model():
-    # Download the model
-    get_model()
-
-    # Yield to run the tests
-    yield
-
-    # Teardown the model
-    os.remove(os.path.join('models', 'trained_model.joblib'))
-
-
 def get_model_age(bucket_name, key):
     """
     Get the age of the model in days.
@@ -35,7 +23,7 @@ def get_model_age(bucket_name, key):
     return age_in_days
 
 
-def test_check_for_staleness(setup_model):
+def test_check_for_staleness():
     """
     Test if the model is considered stale.
     """
