@@ -21,16 +21,20 @@ def evaluate_model(model, x_test, y_test, live: Live):
     avg_recall = recall_score(y_test, y_pred_binary)
     avg_f1 = f1_score(y_test, y_pred_binary)
     roc_auc = roc_auc_score(y_test, y_pred_binary)
-    if not live.summary:
-        live.summary = {"accuracy": avg_accuracy, "precision": avg_precision,
-                        "recall": avg_recall, "f1": avg_f1, "roc_auc": roc_auc}
 
-    live.log_sklearn_plot("roc", y_test, y_pred_binary,
-                          name="roc", drop_intermediate=True)
-    live.log_sklearn_plot("precision_recall", y_test.astype(float), y_pred_binary.astype(float),
-                          name="prc", drop_intermediate=True)
-    live.log_sklearn_plot("confusion_matrix", y_test.squeeze(),
-                          y_pred_binary.squeeze(), name="cm")
+    if live is not None:
+        if not live.summary:
+            live.summary = {"accuracy": avg_accuracy, "precision": avg_precision,
+                            "recall": avg_recall, "f1": avg_f1, "roc_auc": roc_auc}
+
+        live.log_sklearn_plot("roc", y_test, y_pred_binary,
+                              name="roc", drop_intermediate=True)
+        live.log_sklearn_plot("precision_recall", y_test.astype(float), y_pred_binary.astype(float),
+                              name="prc", drop_intermediate=True)
+        live.log_sklearn_plot("confusion_matrix", y_test.squeeze(),
+                              y_pred_binary.squeeze(), name="cm")
+
+    return avg_accuracy, avg_precision, avg_recall, avg_f1, roc_auc
 
 
 def main():
@@ -42,7 +46,7 @@ def main():
     x_test = load('data/preprocessed/preprocessed_x_test.joblib')
     y_test = load('data/preprocessed/preprocessed_y_test.joblib')
 
-    with Live("evaluation") as live:
+    with Live("evaluation", ) as live:
         evaluate_model(model, x_test, y_test, live)
 
 

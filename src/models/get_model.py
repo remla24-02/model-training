@@ -17,7 +17,7 @@ def download_data(bucket_name, file_name, output_file):
     s3.download_file(bucket_name, file_name, output_file)
 
 
-def main():
+def main(model_name: str = 'trained_model'):
     """
     Main function.
     """
@@ -30,7 +30,7 @@ def main():
         key = 'data/files/md5/' + md5_hash[:2] + '/' + md5_hash[2:]
 
     download_data(bucket_name, key.rstrip('\n'),
-                  os.path.join('models', 'trained_model.joblib'))
+                  os.path.join('models', f'{model_name}.joblib'))
 
 
 if __name__ == '__main__':
