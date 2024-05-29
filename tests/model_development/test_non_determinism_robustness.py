@@ -43,7 +43,7 @@ def train_and_evaluate_model(params, x_test, y_test):
     define_model(params)
     train_model()
     model = load(os.path.join('models', 'trained_model.joblib'))
-    accuracy, _, _, _ = evaluate_model(model, x_test, y_test, batch_size=BATCH_SIZE)
+    accuracy, _, _, _, _ = evaluate_model(model, x_test, y_test, batch_size=BATCH_SIZE)
     return accuracy
 
 

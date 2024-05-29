@@ -46,7 +46,7 @@ def preprocess_data_and_evaluate_model(raw_x, raw_y, model):
     _, _, x_test, _ = tokenize_data(raw_x)
     _, _, y_test, _ = encode_data(raw_y)
 
-    accuracy, _, _, _ = evaluate_model(model, x_test, y_test)
+    accuracy, _, _, _, _ = evaluate_model(model, x_test, y_test)
     return accuracy
 
 
