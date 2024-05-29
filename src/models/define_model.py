@@ -1,35 +1,45 @@
 """
 Define models for predictions.
 """
-
+import random
+import numpy as np
+import tensorflow as tf
 from keras.models import Sequential  # type: ignore # pylint: disable=import-error
 from keras.layers import Dense, Dropout, Embedding, Conv1D, MaxPooling1D, Flatten  # type: ignore # pylint: disable=import-error
 from joblib import dump, load
 
 
-def _get_parameters():
+def _get_parameters(random_state=42, epoch=1, batch_size=5000):
     """
     Define parameters for models to train.
     """
     params = {'loss_function': 'binary_crossentropy',
               'optimizer': 'adam',
               'sequence_length': 200,
-              'batch_train': 5000,
-              'batch_test': 5000,
+              'batch_train': batch_size,
+              'batch_test': batch_size,
               'categories': ['phishing', 'legitimate'],
               'char_index': None,
-              'epoch': 30,
+              'epoch': epoch,
               'embedding_dimension': 50,
-              'dataset_dir': "../dataset/small_dataset/"}
+              'dataset_dir': "../dataset/small_dataset/",
+              'random_state': random_state}
     return params
 
 
-def main():
+def main(params=None):
     """
     Define the model and add the layers.
     """
+
+    if params is None:
+        params = _get_parameters()
+
     char_index = load('data/preprocessed/char_index.joblib')
-    params = _get_parameters()
+
+    np.random.seed(params['random_state'])
+    tf.random.set_seed(params['random_state'])
+    random.seed(params['random_state'])
 
     # Define models for training
     model = Sequential()
@@ -66,6 +76,7 @@ def main():
     model.add(Flatten())
 
     model.add(Dense(len(params['categories']) - 1, activation='sigmoid'))
+
 
     dump(model, 'models/defined_model.joblib')
 

@@ -8,11 +8,11 @@ from joblib import load
 from dvclive import Live
 
 
-def evaluate_model(model, x_test, y_test, live: Live):
+def evaluate_model(model, x_test, y_test, batch_size=1000, live: Live = None):
     """
     Evaluate the model with the test data.
     """
-    y_pred = model.predict(x_test, batch_size=1000)
+    y_pred = model.predict(x_test, batch_size=batch_size)
     y_pred_binary = (np.array(y_pred) > 0.5).astype(int)
     y_test = y_test.reshape(-1, 1)
 
