@@ -1,10 +1,11 @@
+from joblib import load
 import pytest
 import os
 from src.data.get_data import main as get_data
 from lib_ml_remla24_team02 import data_preprocessing
 from src.models.define_model import main as define_model
 from src.models.train_model import main as train_model
-from src.models.evaluate_model import main as evaluate_model
+from src.models.evaluate_model import evaluate_model
 
 
 def keep_first_1000_lines(file_path):
@@ -44,9 +45,18 @@ def test_model_pipeline():
 
     assert os.path.exists('models/trained_model.joblib')
 
-    evaluate_model()
+    model = load('models/trained_model.joblib')
+    x_test = load('data/preprocessed/preprocessed_x_test.joblib')
+    y_test = load('data/preprocessed/preprocessed_y_test.joblib')
 
-    assert os.path.exists('evaluation/metrics.json')
+    avg_accuracy, avg_precision, avg_recall, avg_f1, roc_auc = evaluate_model(
+        model, x_test, y_test, None)
+
+    assert avg_accuracy > 0, "Model accuracy is 0"
+    assert avg_precision > 0, "Model precision is 0"
+    assert avg_recall > 0, "Model recall is 0"
+    assert avg_f1 > 0, "Model f1 is 0"
+    assert roc_auc > 0, "Model roc_auc is 0"
 
 
 if __name__ == '__main__':

@@ -34,6 +34,8 @@ def evaluate_model(model, x_test, y_test, live: Live):
         live.log_sklearn_plot("confusion_matrix", y_test.squeeze(),
                               y_pred_binary.squeeze(), name="cm")
 
+    return avg_accuracy, avg_precision, avg_recall, avg_f1, roc_auc
+
 
 def main():
     """
@@ -44,7 +46,7 @@ def main():
     x_test = load('data/preprocessed/preprocessed_x_test.joblib')
     y_test = load('data/preprocessed/preprocessed_y_test.joblib')
 
-    with Live("evaluation") as live:
+    with Live("evaluation", ) as live:
         evaluate_model(model, x_test, y_test, live)
 
 
