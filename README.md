@@ -34,7 +34,7 @@ Next, open a new shell for the environment with the following command:
 poetry shell
 ```
 
-The data to be used during the pipleline is automatically downloaded for the remote Bucket during the pipeline.
+The data to be used during the pipeline is automatically downloaded for the remote Bucket during the pipeline.
 To run the pipeline, do:
 ``` console
 dvc repro
