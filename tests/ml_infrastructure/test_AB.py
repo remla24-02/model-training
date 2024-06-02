@@ -7,7 +7,6 @@ from joblib import load
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 from src.models.get_model import main as get_model
 
-
 METRIC_WEIGHTS = {
     'accuracy': 0.25,
     'precision': 0.25,
@@ -64,9 +63,8 @@ def test_AB():
         if new_value >= old_value - threshold:
             weighted_score += weight * (new_value / old_value)
 
-    assert weighted_score / \
-        total_weight >= 1, f"New model's overall performance did not meet expectations. Weighted score: {
-            weighted_score / total_weight}"
+    assert weighted_score / total_weight >= 1, f"New model's overall performance did not meet expectations. " \
+                                               f"Weighted score: {weighted_score / total_weight}"
 
     print(f"Old Model Metrics: {metrics_old}")
     print(f"New Model Metrics: {metrics_new}")

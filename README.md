@@ -65,6 +65,7 @@ pylint src
 This will show all code smells and provide a score for the codebase
 
 Lastly, all the ML tests can be run with:
+(note that this messes with saved data and models)
 
 ``` console
 pytest tests
