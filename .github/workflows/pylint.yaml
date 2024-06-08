@@ -24,5 +24,3 @@ jobs:
 
     - name: Run pylint
       run: pylint src/
-
-    # TODO: Do we want to run pylint for tests as well?
