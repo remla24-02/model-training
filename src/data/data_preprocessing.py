@@ -12,7 +12,7 @@ def main():
     """
 
     data_preprocessing.preprocess(os.path.join(
-        'data', 'raw_1000'), os.path.join('data', 'preprocessed'))
+        'data', 'raw'), os.path.join('data', 'preprocessed'))
 
 
 if __name__ == '__main__':
