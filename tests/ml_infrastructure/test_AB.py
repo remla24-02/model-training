@@ -1,7 +1,6 @@
 # Run the old and new models and compare the results.
 #
 # Path: tests/ml_infrastructure/test_AB.py
-import os
 import pytest
 from joblib import load
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
@@ -23,10 +22,9 @@ THRESHOLDS = {
 }
 
 
-@pytest.mark.skipif(not os.path.exists('models/trained_model.joblib'), reason="Trained model does not exist")
 def test_AB():
     new_model = load('models/trained_model.joblib')
-    get_model("old_model")
+    get_model("models/old_model.joblib")
     old_model = load('models/old_model.joblib')
 
     x_test = load('data/preprocessed/preprocessed_x_test.joblib')
@@ -64,7 +62,7 @@ def test_AB():
             weighted_score += weight * (new_value / old_value)
 
     assert weighted_score / total_weight >= 1, f"New model's overall performance did not meet expectations. " \
-                                               f"Weighted score: {weighted_score / total_weight}"
+        f"Weighted score: {weighted_score / total_weight}"
 
     print(f"Old Model Metrics: {metrics_old}")
     print(f"New Model Metrics: {metrics_new}")

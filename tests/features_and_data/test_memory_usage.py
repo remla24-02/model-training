@@ -16,7 +16,7 @@ def setup_model():
     yield model_path
 
     # Teardown the model
-    os.remove(model_path)
+    # os.remove(model_path)
 
 
 def test_model_memory_usage(setup_model):

@@ -13,10 +13,10 @@ def setup_data():
     yield
 
     # Teardown the data
-    for data_type in ["train", "val", "test"]:
-        file_path = os.path.join("data", "raw", f"{data_type}.txt")
-        if os.path.exists(file_path):
-            os.remove(file_path)
+    # for data_type in ["train", "val", "test"]:
+    #     file_path = os.path.join("data", "raw", f"{data_type}.txt")
+    #     if os.path.exists(file_path):
+    #         os.remove(file_path)
 
 
 def get_data_ratio(data_type):

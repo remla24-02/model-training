@@ -3,34 +3,34 @@ Download and extract training, testing and validation data.
 """
 
 import os
-import boto3
-from botocore import UNSIGNED
-from botocore.client import Config
+import subprocess
 
 
-def download_data(bucket_name, file_name, output_file):
+def pull_specific_files(output_file):
     """
-    Download data from S3 bucket.
+    Pull specific files from the DVC remote storage.
     """
-    s3 = boto3.client('s3', region_name='eu-north-1',
-                      config=Config(signature_version=UNSIGNED))
-    s3.download_file(bucket_name, file_name, output_file)
+    try:
+        dvc_repo_url = os.path.abspath('.')
+        subprocess.run(
+            ["dvc", "get", dvc_repo_url, "models/trained_model.joblib", "-o", output_file, "--force"], check=True)
+        print("Successfully pulled the latest model.")
+    except subprocess.CalledProcessError as e:
+        print(f"Error pulling the latest model: {e}")
+        exit(1)
 
 
-def main(model_name: str = 'trained_model'):
+def main(output_file: str = 'models/trained_model.joblib'):
     """
-    Main function.
+    Main function to ensure the raw data directory exists and pull the latest data.
     """
-    bucket_name = 'dvc-remla24-02'
+    model_dir = os.path.join('models')
 
-    # read the .dvc file in models folder
-    with open(os.path.join('models', 'trained_model.joblib.dvc'), 'r', encoding='utf-8') as file:
-        md5_hash = file.read()
-        md5_hash = md5_hash.split(' ')[2]
-        key = 'data/files/md5/' + md5_hash[:2] + '/' + md5_hash[2:]
+    # Ensure the raw data directory exists
+    os.makedirs(model_dir, exist_ok=True)
 
-    download_data(bucket_name, key.rstrip('\n'),
-                  os.path.join('models', f'{model_name}.joblib'))
+    # Pull the specified files
+    pull_specific_files(output_file)
 
 
 if __name__ == '__main__':

@@ -1,0 +1,64 @@
+name: Update Metrics
+
+on:
+  workflow_run:
+    workflows: ["Tests"]
+    types:
+      - completed
+
+jobs:
+  update-metrics:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup Python
+      id: setup-python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+        installer-parallel: true
+
+    - name: Load Poetry cache
+      id: load-poetry-cache
+      uses: actions/cache@v3
+      with:
+        path: .venv
+        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+
+    - name: Install dependencies
+      if: steps.load-poetry-cache.outputs.cache-hit != 'true'
+      run: poetry install --no-interaction --no-root
+
+    - name: Run evaluation
+      run: python src/models/evaluate_model.py
+
+    - name: Move evaluation results to temporary folder
+      run: |
+        mkdir evaluation_results
+        cp -a evaluation/. evaluation_results/
+
+    - name: Commit and push metrics and plots
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add evaluation_results/metrics.json
+        git add evaluation_results/plots/roc.json
+        git add evaluation_results/plots/prc.json
+        git add evaluation_results/plots/cm.json
+        git add evaluation_results/plots/roc.png
+        git add evaluation_results/plots/prc.png
+        git add evaluation_results/plots/cm.png
+        git commit -m "Update evaluation metrics and plots"
+        git push origin main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

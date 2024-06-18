@@ -24,7 +24,7 @@ def trained_model():
     yield load(model_path)
 
     # Teardown the model
-    os.remove(model_path)
+    # os.remove(model_path)
 
 
 @pytest.fixture()
@@ -36,18 +36,18 @@ def test_data():
     yield raw_x, raw_y
 
     # Teardown the data
-    for data_type in ["train", "val", "test"]:
-        file_path = os.path.join("data", "raw", f"{data_type}.txt")
-        if os.path.exists(file_path):
-            os.remove(os.path.join("data", "raw", f"{data_type}.txt"))
+    # for data_type in ["train", "val", "test"]:
+    #     file_path = os.path.join("data", "raw", f"{data_type}.txt")
+    #     if os.path.exists(file_path):
+    #         os.remove(os.path.join("data", "raw", f"{data_type}.txt"))
 
 
 def preprocess_data_and_evaluate_model(raw_x, raw_y, model):
     _, _, x_test, _ = tokenize_data(raw_x)
     _, _, y_test, _ = encode_data(raw_y)
 
-    accuracy, _, _, _, _ = evaluate_model(model, x_test, y_test)
-    return accuracy
+    metrics, _, _, _ = evaluate_model(model, x_test, y_test)
+    return metrics["accuracy"]
 
 
 def test_data_slice(trained_model, test_data):
@@ -58,7 +58,8 @@ def test_data_slice(trained_model, test_data):
     """
 
     raw_x, raw_y = test_data
-    original_accuracy = preprocess_data_and_evaluate_model(raw_x, raw_y, trained_model)
+    original_accuracy = preprocess_data_and_evaluate_model(
+        raw_x, raw_y, trained_model)
 
     raw_x_train, raw_x_test, raw_x_val = raw_x
     raw_y_train, raw_y_test, raw_y_val = raw_y
@@ -77,10 +78,13 @@ def test_data_slice(trained_model, test_data):
     }
 
     for slice_name, indices in sliced_data.items():
-        raw_x = [raw_x_train, [raw_x_test[index] for index in indices], raw_x_val]
-        raw_y = [raw_y_train, [raw_y_test[index] for index in indices], raw_y_val]
+        raw_x = [raw_x_train, [raw_x_test[index]
+                               for index in indices], raw_x_val]
+        raw_y = [raw_y_train, [raw_y_test[index]
+                               for index in indices], raw_y_val]
 
-        slice_accuracy = preprocess_data_and_evaluate_model(raw_x, raw_y, trained_model)
+        slice_accuracy = preprocess_data_and_evaluate_model(
+            raw_x, raw_y, trained_model)
 
         assert abs(original_accuracy - slice_accuracy) <= ACCURACY_THRESHOLD, \
             (f"The accuracy deviation for slice '{slice_name}' "

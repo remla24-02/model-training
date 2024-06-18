@@ -3,42 +3,40 @@ Download and extract training, testing and validation data.
 """
 
 import os
-import boto3
-from botocore import UNSIGNED
-from botocore.client import Config
+import subprocess
 
 
-def download_data(bucket_name, file_name, output_file):
+def pull_specific_files(files):
     """
-    Download data from S3 bucket.
+    Pull specific files from the DVC remote storage.
     """
-    s3 = boto3.client('s3', region_name='eu-north-1',
-                      config=Config(signature_version=UNSIGNED))
-    s3.download_file(bucket_name, file_name, output_file)
+    try:
+        for file in files:
+            subprocess.run(["dvc", "pull", file, "--force"], check=True)
+        print("Successfully pulled the specified files.")
+    except subprocess.CalledProcessError as e:
+        print(f"Error pulling the specified files: {e}")
+        exit(1)
 
 
 def main():
     """
-    Main function.
+    Main function to ensure the raw data directory exists and pull the latest data.
     """
-    bucket_name = 'dvc-remla24-02'
+    raw_data_dir = os.path.join('data', 'raw')
 
-    dvc_files = [file for file in os.listdir(
-        os.path.join('data', 'raw')) if file.endswith('.dvc')]
+    # Ensure the raw data directory exists
+    os.makedirs(raw_data_dir, exist_ok=True)
 
-    files = {}
+    # List of specific files to pull
+    files_to_pull = [
+        os.path.join('data', 'raw', 'train.txt'),
+        os.path.join('data', 'raw', 'test.txt'),
+        os.path.join('data', 'raw', 'val.txt')
+    ]
 
-    for dvc_file in dvc_files:
-        with open(os.path.join('data', 'raw', dvc_file), 'r', encoding='utf-8') as file:
-            file_name = os.path.splitext(os.path.basename(file.name))[0]
-            md5_hash = file.read()
-            md5_hash = md5_hash.split(' ')[2]
-            key = 'data/files/md5/' + md5_hash[:2] + '/' + md5_hash[2:]
-            files[file_name] = key.rstrip('\n')
-
-    for name, key in files.items():
-        download_data(bucket_name, key, os.path.join(
-            'data', 'raw', f"{name}"))
+    # Pull the specified files
+    pull_specific_files(files_to_pull)
 
 
 if __name__ == '__main__':

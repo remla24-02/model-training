@@ -8,9 +8,9 @@ from src.models.train_model import main as train_model
 from src.models.evaluate_model import evaluate_model
 
 
-def keep_first_1000_lines(file_path):
+def keep_first_20000_lines(file_path):
     with open(file_path, 'r') as file:
-        lines = [file.readline() for _ in range(1000)]
+        lines = [file.readline() for _ in range(20000)]
 
     with open(file_path, 'w') as file:
         file.writelines(lines)
@@ -23,9 +23,9 @@ def test_model_pipeline():
     assert os.path.exists('data/raw/test.txt')
     assert os.path.exists('data/raw/val.txt')
 
-    keep_first_1000_lines('data/raw/train.txt')
-    keep_first_1000_lines('data/raw/test.txt')
-    keep_first_1000_lines('data/raw/val.txt')
+    keep_first_20000_lines('data/raw/train.txt')
+    keep_first_20000_lines('data/raw/test.txt')
+    keep_first_20000_lines('data/raw/val.txt')
 
     data_preprocessing.preprocess(os.path.join(
         'data', 'raw'), os.path.join('data', 'preprocessed'))
@@ -49,8 +49,14 @@ def test_model_pipeline():
     x_test = load('data/preprocessed/preprocessed_x_test.joblib')
     y_test = load('data/preprocessed/preprocessed_y_test.joblib')
 
-    avg_accuracy, avg_precision, avg_recall, avg_f1, roc_auc = evaluate_model(
+    metrics, _, _, _ = evaluate_model(
         model, x_test, y_test, None)
+
+    avg_accuracy = metrics["accuracy"]
+    avg_precision = metrics["precision"]
+    avg_recall = metrics["recall"]
+    avg_f1 = metrics["f1"]
+    roc_auc = metrics["roc_auc"]
 
     assert avg_accuracy > 0, "Model accuracy is 0"
     assert avg_precision > 0, "Model precision is 0"
