@@ -1,10 +1,10 @@
-[![Pylint Score](https://img.shields.io/badge/dynamic/json?style=flat-square&colorA=grey&colorB=99ff99&label=Pylint&query=pylint_score&url=https://raw.githubusercontent.com/remla24-02/model-training/${GITHUB_REF_NAME}/pylint_score.json)](https://github.com/remla24-02/model-training/${GITHUB_REF_NAME}/pylint_score.json)
+![Pylint Score](https://img.shields.io/badge/pylint-0-brightgreen)
 
-[![Accuracy](https://img.shields.io/badge/dynamic/json?style=flat-square&colorA=grey&colorB=99ff99&label=Accuracy&query=accuracy&url=https://raw.githubusercontent.com/remla24-02/model-training/${GITHUB_REF_NAME}/evaluation_results/metrics.json)](https://raw.githubusercontent.com/remla24-02/model-training/${GITHUB_REF_NAME}/evaluation_results/metrics.json)  
-[![Precision](https://img.shields.io/badge/dynamic/json?style=flat-square&colorA=grey&colorB=99ff99&label=Precision&query=precision&url=https://raw.githubusercontent.com/remla24-02/model-training/${GITHUB_REF_NAME}/evaluation_results/metrics.json)](https://raw.githubusercontent.com/remla24-02/model-training/${GITHUB_REF_NAME}/evaluation_results/metrics.json)  
-[![Recall](https://img.shields.io/badge/dynamic/json?style=flat-square&colorA=grey&colorB=99ff99&label=Recall&query=recall&url=https://raw.githubusercontent.com/remla24-02/model-training/${GITHUB_REF_NAME}/evaluation_results/metrics.json)](https://raw.githubusercontent.com/remla24-02/model-training/${GITHUB_REF_NAME}/evaluation_results/metrics.json)  
-[![F1](https://img.shields.io/badge/dynamic/json?style=flat-square&colorA=grey&colorB=99ff99&label=F1&query=f1&url=https://raw.githubusercontent.com/remla24-02/model-training/${GITHUB_REF_NAME}/evaluation_results/metrics.json)](https://raw.githubusercontent.com/remla24-02/model-training/${GITHUB_REF_NAME}/evaluation_results/metrics.json)  
-[![ROC_AUC](https://img.shields.io/badge/dynamic/json?style=flat-square&colorA=grey&colorB=99ff99&label=ROC_AUC&query=roc_auc&url=https://raw.githubusercontent.com/remla24-02/model-training/${GITHUB_REF_NAME}/evaluation_results/metrics.json)](https://raw.githubusercontent.com/remla24-02/model-training/${GITHUB_REF_NAME}/evaluation_results/metrics.json)
+![accuracy](https://img.shields.io/badge/accuracy-0.0-blue)
+![precision](https://img.shields.io/badge/precision-0.0-blue)
+![recall](https://img.shields.io/badge/recall-0.0-blue)
+![f1](https://img.shields.io/badge/f1-0.0-blue)
+![roc_auc](https://img.shields.io/badge/roc_auc-0.0-blue)
 
 
 # REMLA Team 2 Model

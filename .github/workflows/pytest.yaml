@@ -4,6 +4,9 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -46,3 +49,25 @@ jobs:
       run: |
         source .venv/bin/activate
         pytest tests
+
+    - name: Extract metrics and update README
+      run: |
+        metrics=$(cat evaluation/metrics.json | jq -r 'to_entries|map("\(.key)=\(.value)")|.[]')
+        for metric in $metrics; do
+          key=$(echo $metric | cut -d'=' -f1)
+          value=$(echo $metric | cut -d'=' -f2)
+          badge_url="https://img.shields.io/badge/${key}-${value}-blue"
+          # Update or add the badge in the README
+          if grep -q "![${key}]" README.md; then
+            sed -i 's|!\[${key}\](.*)|![${key}](${badge_url})|' README.md
+          else
+            echo "![${key}](${badge_url})" >> README.md
+          fi
+        done
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add README.md
+        git commit -m 'Update README with test metrics badges'
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
