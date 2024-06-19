@@ -11,9 +11,11 @@ def pull_specific_files(files):
     """
     Pull specific files from the DVC remote storage.
     """
+    dvc_repo_url = os.path.abspath('.')
     try:
         for file in files:
-            subprocess.run(["dvc", "pull", file, "--force"], check=True)
+            subprocess.run(["dvc", "get", dvc_repo_url, file,
+                            "-o", file, "--force"], check=True)
         print("Successfully pulled the specified files.")
     except subprocess.CalledProcessError as e:
         print(f"Error pulling the specified files: {e}")

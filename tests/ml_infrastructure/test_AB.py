@@ -3,7 +3,7 @@
 # Path: tests/ml_infrastructure/test_AB.py
 import pytest
 from joblib import load
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from src.models.evaluate_model import evaluate_model
 from src.models.get_model import main as get_model
 
 METRIC_WEIGHTS = {
@@ -30,25 +30,11 @@ def test_AB():
     x_test = load('data/preprocessed/preprocessed_x_test.joblib')
     y_test = load('data/preprocessed/preprocessed_y_test.joblib')
 
-    y_pred_old = old_model.predict(x_test)
-    y_pred_binary_old = (y_pred_old > 0.5).astype(int).reshape(-1, 1)
+    metrics_old, _, _, _ = evaluate_model(
+        old_model, x_test, y_test, save_data=False)
 
-    y_pred_new = new_model.predict(x_test)
-    y_pred_binary_new = (y_pred_new > 0.5).astype(int).reshape(-1, 1)
-
-    metrics_old = {
-        'accuracy': accuracy_score(y_test, y_pred_binary_old),
-        'precision': precision_score(y_test, y_pred_binary_old),
-        'recall': recall_score(y_test, y_pred_binary_old),
-        'f1': f1_score(y_test, y_pred_binary_old)
-    }
-
-    metrics_new = {
-        'accuracy': accuracy_score(y_test, y_pred_binary_new),
-        'precision': precision_score(y_test, y_pred_binary_new),
-        'recall': recall_score(y_test, y_pred_binary_new),
-        'f1': f1_score(y_test, y_pred_binary_new)
-    }
+    metrics_new, _, _, _ = evaluate_model(
+        new_model, x_test, y_test, save_data=False)
 
     total_weight = sum(METRIC_WEIGHTS.values())
     weighted_score = 0

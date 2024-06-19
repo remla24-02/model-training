@@ -4,25 +4,25 @@ Train models for predictions.
 
 from pathlib import Path
 import sys
-
 from joblib import dump, load
+
+from src.models.define_model import _get_parameters  # pylint: disable=C0413
 
 path_root = Path(__file__).parents[2]
 sys.path.append(str(path_root))
 
-from src.models.define_model import _get_parameters  # pylint: disable=C0413
 
-
-def main():
+def main(model_name='trained_model', defined_model='defined_model',
+         preprocessed_folder='data/preprocessed'):
     """
     Train the defined model.
     """
-    model = load('models/defined_model.joblib')
+    model = load(f'models/{defined_model}.joblib')
 
-    x_train = load('data/preprocessed/preprocessed_x_train.joblib')
-    y_train = load('data/preprocessed/preprocessed_y_train.joblib')
-    x_val = load('data/preprocessed/preprocessed_x_val.joblib')
-    y_val = load('data/preprocessed/preprocessed_y_val.joblib')
+    x_train = load(f'{preprocessed_folder}/preprocessed_x_train.joblib')
+    y_train = load(f'{preprocessed_folder}/preprocessed_y_train.joblib')
+    x_val = load(f'{preprocessed_folder}/preprocessed_x_val.joblib')
+    y_val = load(f'{preprocessed_folder}/preprocessed_y_val.joblib')
 
     params = _get_parameters()
 
@@ -33,7 +33,7 @@ def main():
               epochs=params['epoch'], shuffle=True, validation_data=(x_val, y_val))
 
     # Store trained model
-    dump(model, 'models/trained_model.joblib')
+    dump(model, f'models/{model_name}.joblib')
 
 
 if __name__ == "__main__":

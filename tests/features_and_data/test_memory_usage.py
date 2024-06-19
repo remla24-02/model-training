@@ -1,8 +1,6 @@
 import pytest
 import os
 
-from src.models.get_model import main as get_model
-
 MAX_MODEL_SIZE_MB = 10
 
 
@@ -10,13 +8,9 @@ MAX_MODEL_SIZE_MB = 10
 def setup_model():
     # Create a model
     model_path = os.path.join('models', 'trained_model.joblib')
-    get_model()
 
     # Yield to run the tests
     yield model_path
-
-    # Teardown the model
-    # os.remove(model_path)
 
 
 def test_model_memory_usage(setup_model):
