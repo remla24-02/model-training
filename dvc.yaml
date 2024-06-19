@@ -1,13 +1,13 @@
 stages:
   get_data:
-    cmd: python src/data/get_data.py
+    cmd: PYTHONPATH=. python src/data/get_data.py
     outs:
       - data/raw/train.txt
       - data/raw/test.txt
       - data/raw/val.txt
 
   preprocess:
-    cmd: python src/data/data_preprocessing.py
+    cmd: PYTHONPATH=. python src/data/data_preprocessing.py
     deps:
       - data/raw/train.txt
       - data/raw/test.txt
@@ -22,14 +22,14 @@ stages:
       - data/preprocessed/char_index.joblib
 
   define_model:
-    cmd: python src/models/define_model.py
+    cmd: PYTHONPATH=. python src/models/define_model.py
     deps:
       - data/preprocessed/char_index.joblib
     outs:
       - models/defined_model.joblib
 
   train_model:
-    cmd: python src/models/train_model.py
+    cmd: PYTHONPATH=. python src/models/train_model.py
     deps:
       - models/defined_model.joblib
       - data/preprocessed/preprocessed_x_train.joblib
@@ -40,7 +40,7 @@ stages:
       - models/trained_model.joblib
 
   evaluate_model:
-    cmd: python src/models/evaluate_model.py
+    cmd: PYTHONPATH=. python src/models/evaluate_model.py
     deps:
       - models/trained_model.joblib
       - data/preprocessed/preprocessed_x_test.joblib
