@@ -72,62 +72,62 @@ stages:
       md5: de83be22957afecf25f0411fbf0216b7
       size: 50494
   train_model:
-    cmd: python src/models/train_model.py
+    cmd: PYTHONPATH=. python src/models/train_model.py
     deps:
     - path: data/preprocessed/preprocessed_x_train.joblib
       hash: md5
-      md5: 89d9fe39afa170b64554ad83830d2b0d
-      size: 800241
+      md5: 957df5493b81973caa16dc32d1e372ff
+      size: 836620241
     - path: data/preprocessed/preprocessed_x_val.joblib
       hash: md5
-      md5: 2571c7c1bcc2e7e2730ea2795012fab2
-      size: 800241
+      md5: 56b9176994f90b75f32286ca276f8b87
+      size: 412064241
     - path: data/preprocessed/preprocessed_y_train.joblib
       hash: md5
-      md5: d837c616489dce3a9a80651b8945f780
-      size: 8225
+      md5: 32e2283a7fbe43fa763e7587ba0847f4
+      size: 8366441
     - path: data/preprocessed/preprocessed_y_val.joblib
       hash: md5
-      md5: d054693b6a4b5b49305c9cb81daae8b5
-      size: 8225
+      md5: 33b40b9c99b9dbc5dbf016f7adfaed70
+      size: 4120881
     - path: models/defined_model.joblib
       hash: md5
-      md5: cdba9138845966a1af9aa13a67caad73
+      md5: de83be22957afecf25f0411fbf0216b7
       size: 50494
     outs:
     - path: models/trained_model.joblib
       hash: md5
-      md5: 1e1213bf6b5d3e51019d572cb5b2d4b0
-      size: 5467185
+      md5: fb8ac980da492f1055e1a09079005457
+      size: 5472585
   evaluate_model:
     cmd: python src/models/evaluate_model.py
     deps:
     - path: data/preprocessed/preprocessed_x_test.joblib
       hash: md5
-      md5: 7f2b3b017ccb2a5b994857cb3b1f125f
-      size: 800241
+      md5: 9efc054fb130a7a7262ede3e002dbff8
+      size: 291359441
     - path: data/preprocessed/preprocessed_y_test.joblib
       hash: md5
-      md5: 668ac0327b9c0e4d083b305134dd83e9
-      size: 8225
+      md5: cb123d0b96613ac4fa75532d76b3478a
+      size: 2913833
     - path: models/trained_model.joblib
       hash: md5
-      md5: 1e1213bf6b5d3e51019d572cb5b2d4b0
-      size: 5467185
+      md5: fb8ac980da492f1055e1a09079005457
+      size: 5472585
     outs:
     - path: evaluation/metrics.json
       hash: md5
-      md5: 898995e75ebfbf8db5406f51d6625f69
-      size: 79
+      md5: febef861205c9fffafe1de2764937e29
+      size: 152
     - path: evaluation/plots/cm.json
       hash: md5
-      md5: ff7429cdb209f601a84021586500eadb
-      size: 6069
+      md5: d4498a3e411483982c89ba5fd71fd719
+      size: 2185276
     - path: evaluation/plots/prc.json
       hash: md5
-      md5: eea61b7878ba09e04b493dccee71fe9d
-      size: 49
+      md5: c8171bec79c6be717e1962b6e3fadaec
+      size: 103
     - path: evaluation/plots/roc.json
       hash: md5
-      md5: 73fc22aef940e70b43dcf873d486be7e
-      size: 38
+      md5: 5d628f3750ae02b3309abd05d8bd270f
+      size: 79
