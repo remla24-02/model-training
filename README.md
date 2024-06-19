@@ -138,10 +138,14 @@ dvc plots show
 ```
 
 ### Confusion Matric
-![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/main/evaluation_results/plots/cm.png)
+![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/${branch}/evaluation_results/plots/roc.png)
 
 ### ROC Curve
-![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/main/evaluation_results/plots/roc.png)
+![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/${branch}/evaluation_results/plots/roc.png)
 
 ### Precision-Recall
-![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/main/evaluation_results/plots/prc.png)
+![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/${branch}/evaluation_results/plots/roc.png)
+![precision](https://img.shields.io/badge/precision-0.9669837340401201-blue)
+![recall](https://img.shields.io/badge/recall-0.8847922296153585-blue)
+![f1](https://img.shields.io/badge/f1-0.9240639373611856-blue)
+![roc_auc](https://img.shields.io/badge/roc_auc-0.9302317019116171-blue)
