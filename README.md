@@ -6,6 +6,10 @@
 ![f1](https://img.shields.io/badge/f1-0.0-blue)
 ![roc_auc](https://img.shields.io/badge/roc_auc-0.0-blue)
 
+![Test Status](https://img.shields.io/badge/tests-unknown-lightgrey)
+
+### Test Results
+
 
 # REMLA Team 2 Model
 This is Team 2's repository for Assignment A1 for Release Engineering for Machine Learning Applications 2023/24.  

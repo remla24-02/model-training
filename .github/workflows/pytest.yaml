@@ -46,13 +46,31 @@ jobs:
         dvc remote modify aws_s3 secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     - name: Run tests
+      id: run-tests
       run: |
         source .venv/bin/activate
-        pytest tests
+        pytest tests > pytest_output.txt
+      continue-on-error: true
+    
+    - name: Upload evaluation results
+      run: |
+        mkdir -p evaluation_results/plots
+        cp evaluation/metrics.json evaluation_results/metrics.json
+        cp evaluation/plots/cm.png evaluation_results/plots/cm.png
+        cp evaluation/plots/roc.png evaluation_results/plots/roc.png
+        cp evaluation/plots/prc.png evaluation_results/plots/prc.png
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add evaluation_results
+        git commit -m 'Upload evaluation results'
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Extract metrics and update README
       run: |
-        metrics=$(cat evaluation/metrics.json | jq -r 'to_entries|map("\(.key)=\(.value)")|.[]')
+        branch=${GITHUB_REF_NAME}
+        metrics=$(cat evaluation_results/metrics.json | jq -r 'to_entries|map("\(.key)=\(.value)")|.[]')
         for metric in $metrics; do
           key=$(echo $metric | cut -d'=' -f1)
           value=$(echo $metric | cut -d'=' -f2)
@@ -64,10 +82,37 @@ jobs:
             echo "![${key}](${badge_url})" >> README.md
           fi
         done
+        # Update confusion matrix, ROC curve, and precision-recall plot URLs
+        sed -i 's|!\[Confusion Matrix\](.*)|![Confusion Matrix](https://raw.githubusercontent.com/${{ github.repository }}/${branch}/evaluation_results/plots/cm.png)|' README.md
+        sed -i 's|!\[ROC Curve\](.*)|![ROC Curve](https://raw.githubusercontent.com/${{ github.repository }}/${branch}/evaluation_results/plots/roc.png)|' README.md
+        sed -i 's|!\[Precision-Recall\](.*)|![Precision-Recall](https://raw.githubusercontent.com/${{ github.repository }}/${branch}/evaluation_results/plots/prc.png)|' README.md
+        
+        # Determine if tests passed or failed
+        if grep -q 'FAILED' pytest_output.txt; then
+          badge_url="https://img.shields.io/badge/tests-failed-red"
+          test_summary=$(grep -E 'FAILED|ERROR' pytest_output.txt)
+        else
+          badge_url="https://img.shields.io/badge/tests-passed-brightgreen"
+          test_summary="All tests passed successfully!"
+        fi
+
+        # Add test results badge and summary to README
+        if grep -q '![Test Status](.*)' README.md; then
+          sed -i 's|!\[Test Status\](.*)|![Test Status](${badge_url})|' README.md
+        else
+          echo "![Test Status](${badge_url})" >> README.md
+        fi
+
+        if grep -q '### Test Results' README.md; then
+          sed -i '/### Test Results/,$d' README.md
+        fi
+        echo -e "### Test Results\n\n\`\`\`\n$test_summary\n\`\`\`" >> README.md
+
+        echo -e "### Test Results\n\n\`\`\`\n$test_summary\n\`\`\`" >> README.md
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git add README.md
-        git commit -m 'Update README with test metrics badges'
+        git commit -m 'Update README with test metrics badges and plots'
         git push
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
