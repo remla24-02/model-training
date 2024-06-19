@@ -4,6 +4,7 @@ Download and extract training, testing and validation data.
 
 import os
 import subprocess
+import sys
 
 
 def pull_specific_files(files):
@@ -16,7 +17,7 @@ def pull_specific_files(files):
         print("Successfully pulled the specified files.")
     except subprocess.CalledProcessError as e:
         print(f"Error pulling the specified files: {e}")
-        exit(1)
+        sys.exit(1)
 
 
 def main():

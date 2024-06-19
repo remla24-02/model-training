@@ -1,22 +1,62 @@
+"""
+Evaluate the trained model using various metrics and save the results to files.
+"""
+
 import os
 import json
 import numpy as np
 from joblib import load
 import matplotlib.pyplot as plt
-from sklearn.metrics import accuracy_score, roc_auc_score, recall_score, f1_score, precision_score, roc_curve, precision_recall_curve, confusion_matrix
+import matplotlib.colors as mcolors
+from sklearn.metrics import (accuracy_score, roc_auc_score, recall_score,
+                             f1_score, precision_score, roc_curve,
+                             precision_recall_curve, confusion_matrix)
 
 
 def save_metrics(metrics, filepath):
-    with open(filepath, 'w') as f:
+    """
+    Save the metrics dictionary to a JSON file.
+
+    Args:
+        metrics (dict): The metrics dictionary to be saved.
+        filepath (str): The path to the JSON file.
+
+    Returns:
+        None
+    """
+    with open(filepath, 'w', encoding='utf-8') as f:
         json.dump(metrics, f)
 
 
 def save_plot_data(data, filepath):
-    with open(filepath, 'w') as f:
+    """
+    Save the plot data to a JSON file.
+
+    Args:
+        data (dict): The plot data to be saved.
+        filepath (str): The path to the JSON file.
+
+    Returns:
+        None
+    """
+    with open(filepath, 'w', encoding='utf-8') as f:
         json.dump(data, f)
 
 
 def plot_and_save_roc(y_test, y_pred_binary, filepath):
+    """
+    Plots the Receiver Operating Characteristic (ROC) curve and saves it to a file.
+
+    Parameters:
+    - y_test (array-like): The true labels of the test data.
+    - y_pred_binary (array-like): The predicted binary labels of the test data.
+    - filepath (str): The file path to save the ROC curve plot.
+
+    Returns:
+    - dict: A dictionary containing the false positive rates (fpr) 
+            and true positive rates (tpr) as lists.
+
+    """
     fpr, tpr, _ = roc_curve(y_test, y_pred_binary)
     plt.figure()
     plt.plot(fpr, tpr, marker='.')
@@ -29,6 +69,18 @@ def plot_and_save_roc(y_test, y_pred_binary, filepath):
 
 
 def plot_and_save_prc(y_test, y_pred_binary, filepath):
+    """
+    Plots the Precision-Recall Curve and saves it to a file.
+
+    Args:
+        y_test (array-like): The true labels of the test data.
+        y_pred_binary (array-like): The predicted binary labels of the test data.
+        filepath (str): The path to save the plot.
+
+    Returns:
+        dict: A dictionary containing the precision and recall values as lists.
+
+    """
     precision, recall, _ = precision_recall_curve(y_test, y_pred_binary)
     plt.figure()
     plt.plot(recall, precision, marker='.')
@@ -41,9 +93,21 @@ def plot_and_save_prc(y_test, y_pred_binary, filepath):
 
 
 def plot_and_save_cm(y_test, y_pred_binary, filepath):
+    """
+    Plot and save the confusion matrix.
+
+    Args:
+        y_test (array-like): The true labels.
+        y_pred_binary (array-like): The predicted labels.
+        filepath (str): The file path to save the plot.
+
+    Returns:
+        dict: A dictionary containing the confusion matrix, actual labels, and predicted labels.
+    """
     cm = confusion_matrix(y_test, y_pred_binary)
     plt.figure()
-    plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
+    plt.imshow(cm, interpolation='nearest',
+               cmap=mcolors.ListedColormap(['blue']))
     plt.title('Confusion Matrix')
     plt.colorbar()
     tick_marks = np.arange(2)
@@ -62,6 +126,27 @@ def plot_and_save_cm(y_test, y_pred_binary, filepath):
 
 
 def evaluate_model(model, x_test, y_test, batch_size=1000):
+    """
+    Evaluates a machine learning model using various metrics.
+
+    Args:
+        model (object): The trained machine learning model.
+        x_test (numpy.ndarray): The input features for testing.
+        y_test (numpy.ndarray): The target labels for testing.
+        batch_size (int, optional): The batch size for prediction. Defaults to 1000.
+
+    Returns:
+        tuple: A tuple containing the evaluation metrics, ROC data, PRC data, and CM data.
+
+    Raises:
+        None
+
+    Examples:
+        >>> model = create_model()
+        >>> x_test = load_test_data()
+        >>> y_test = load_test_labels()
+        >>> metrics, roc_data, prc_data, cm_data = evaluate_model(model, x_test, y_test)
+    """
     y_pred = model.predict(x_test, batch_size=batch_size)
     y_pred_binary = (np.array(y_pred) > 0.5).astype(int)
     y_test = y_test.reshape(-1, 1)
@@ -92,6 +177,18 @@ def evaluate_model(model, x_test, y_test, batch_size=1000):
 
 
 def main():
+    """
+    Main function for evaluating a trained model.
+
+    Loads the trained model, test data, evaluates the model using the test data,
+    and saves the evaluation metrics and plot data.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     model = load('models/trained_model.joblib')
 
     x_test = load('data/preprocessed/preprocessed_x_test.joblib')

@@ -4,6 +4,7 @@ Download and extract training, testing and validation data.
 
 import os
 import subprocess
+import sys
 
 
 def pull_specific_files(output_file):
@@ -12,12 +13,12 @@ def pull_specific_files(output_file):
     """
     try:
         dvc_repo_url = os.path.abspath('.')
-        subprocess.run(
-            ["dvc", "get", dvc_repo_url, "models/trained_model.joblib", "-o", output_file, "--force"], check=True)
+        subprocess.run(["dvc", "get", dvc_repo_url, "models/trained_model.joblib",
+                       "-o", output_file, "--force"], check=True)
         print("Successfully pulled the latest model.")
     except subprocess.CalledProcessError as e:
         print(f"Error pulling the latest model: {e}")
-        exit(1)
+        sys.exit(1)
 
 
 def main(output_file: str = 'models/trained_model.joblib'):
