@@ -36,14 +36,13 @@ jobs:
       if: steps.load-poetry-cache.outputs.cache-hit != 'true'
       run: poetry install --no-interaction --no-root
 
-    - name: Activate Poetry environment
-      run: source .venv/bin/activate
-
     - name: Set up DVC remote with AWS credentials
       run: |
+        source .venv/bin/activate
         dvc remote modify aws_s3 access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
         dvc remote modify aws_s3 secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     - name: Run tests
       run: |
+        source .venv/bin/activate
         pytest tests

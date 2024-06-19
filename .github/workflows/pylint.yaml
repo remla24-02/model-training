@@ -22,5 +22,18 @@ jobs:
         python -m pip install --upgrade pip
         pip install pylint
 
-    - name: Run pylint
-      run: pylint src/
+    - name: Run pylint and save results
+      run: |
+        pylint src/ > pylint_report.txt || true
+        pylint src/ | tee pylint_report.txt
+        pylint src/ --output-format=json:pylint_score.json
+
+    - name: Commit pylint score
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add pylint_score.json
+        git commit -m 'Add pylint score JSON'
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
