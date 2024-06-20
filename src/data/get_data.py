@@ -41,6 +41,14 @@ def main():
     # Pull the specified files
     pull_specific_files(files_to_pull)
 
+    # only keep the first 20000 lines of each file
+    for file in files_to_pull:
+        with open(file, 'r') as f:
+            lines = [f.readline() for _ in range(20000)]
+
+        with open(file, 'w') as f:
+            f.writelines(lines)
+
 
 if __name__ == '__main__':
     main()
