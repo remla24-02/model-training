@@ -72,7 +72,6 @@ jobs:
           badge_url="https://img.shields.io/badge/${key}-${value}-blue"
           # Update or add the badge in the README
           sed -i "s|!\[${key}\](.*)|![${key}](${badge_url})|" README.md
-          fi
         done
         # Update confusion matrix, ROC curve, and precision-recall plot URLs
         sed -i "s|!\[Confusion Matrix\](.*)|![Confusion Matrix](https://raw.githubusercontent.com/${{ github.repository }}/${GITHUB_REF_NAME}/evaluation_results/plots/cm.png)|" README.md
