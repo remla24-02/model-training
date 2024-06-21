@@ -78,7 +78,7 @@ jobs:
         sed -i "s|!\[ROC Curve\](.*)|![ROC Curve](https://raw.githubusercontent.com/${{ github.repository }}/${GITHUB_REF_NAME}/evaluation_results/plots/roc.png)|" README.md
         sed -i "s|!\[Precision-Recall\](.*)|![Precision-Recall](https://raw.githubusercontent.com/${{ github.repository }}/${GITHUB_REF_NAME}/evaluation_results/plots/prc.png)|" README.md
 
-    - name: Cache DVC outputs
+    - name: Cache files
       uses: actions/cache@v2
       with:
         path: |
@@ -86,6 +86,7 @@ jobs:
           data
           models
           evaluation
+          README.md
         key: ${{ runner.os }}-pipeline-${{ github.sha }}
         restore-keys: |
           ${{ runner.os }}-pipeline-
@@ -93,6 +94,140 @@ jobs:
   test:
     runs-on: ubuntu-latest
     needs: run_model_pipeline
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      id: setup-python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+        installer-parallel: true
+
+    - name: Load Poetry cache
+      id: load-poetry-cache
+      uses: actions/cache@v3
+      with:
+        path: .venv
+        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+
+    - name: Install dependencies
+      if: steps.load-poetry-cache.outputs.cache-hit != 'true'
+      run: poetry install --no-interaction --no-root
+
+    - name: Set up DVC remote with AWS credentials
+      run: |
+        source .venv/bin/activate
+        dvc remote modify aws_s3 access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+        dvc remote modify aws_s3 secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    - name: Restore cache
+      uses: actions/cache@v2
+      with:
+        path: |
+          .dvc/cache
+          data
+          models
+          evaluation
+          README.md
+        key: ${{ runner.os }}-pipeline-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-pipeline-
+
+    - name: Run tests
+      id: run-tests
+      run: |
+        source .venv/bin/activate
+        pytest tests > pytest_output.txt
+      continue-on-error: true
+
+    - name: Extract test results and update README
+      id: update-readme-tests
+      run: |       
+        # Determine if tests passed or failed
+        if grep -q 'FAILED' pytest_output.txt; then
+          badge_url="https://img.shields.io/badge/tests-failed-red"
+          test_summary=$(grep -E 'FAILED|ERROR' pytest_output.txt)
+        else
+          badge_url="https://img.shields.io/badge/tests-passed-brightgreen"
+          test_summary="All tests passed successfully!"
+        fi
+
+        # Update test results badge and summary to README
+        sed -i "s|!\[Test Status\](.*)|![Test Status](${badge_url})|" README.md
+
+        sed -i '/### Test Results/,$d' README.md
+    
+    - name: Cache files
+      uses: actions/cache@v2
+      with:
+        path: |
+          .dvc/cache
+          data
+          models
+          evaluation
+          README.md
+        key: ${{ runner.os }}-pipeline-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-pipeline-
+
+
+  commit_and_push:
+    runs-on: ubuntu-latest
+    needs: [run_model_pipeline, test]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Restore cache
+      uses: actions/cache@v2
+      with:
+        path: |
+          evaluation
+          README.md
+        key: ${{ runner.os }}-pipeline-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-pipeline-
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+        git add README.md evaluation_results
+        if ! git diff-index --quiet HEAD; then
+          git commit -m 'Update README with metrics and test results'
+          
+          # Pull the latest changes from the remote branch
+          {
+            git pull --rebase
+          } || {
+            echo "Conflicts detected during rebase. Aborting rebase."
+            git rebase --abort
+            exit 1
+          }
+          
+          # Push the combined changes to the remote branch
+          git push
+        else
+          echo "No changes to commit"
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  release_model:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main'
 
     steps:
     - name: Checkout code
@@ -140,60 +275,18 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-pipeline-
 
-    - name: Run tests
-      id: run-tests
+    - name: Add changes to DVC and push
       run: |
-        source .venv/bin/activate
-        pytest tests > pytest_output.txt
-      continue-on-error: true
-
-    - name: Extract test results and update README
-      id: update-readme-tests
-      run: |       
-        # Determine if tests passed or failed
-        if grep -q 'FAILED' pytest_output.txt; then
-          badge_url="https://img.shields.io/badge/tests-failed-red"
-          test_summary=$(grep -E 'FAILED|ERROR' pytest_output.txt)
-        else
-          badge_url="https://img.shields.io/badge/tests-passed-brightgreen"
-          test_summary="All tests passed successfully!"
-        fi
-
-        # Update test results badge and summary to README
-        sed -i "s|!\[Test Status\](.*)|![Test Status](${badge_url})|" README.md
-
-        sed -i '/### Test Results/,$d' README.md
-
-  commit_and_push:
-    runs-on: ubuntu-latest
-    needs: [run_model_pipeline, test]
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+        dvc add .
+        dvc push
 
     - name: Commit and push changes
       run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-
-        git add README.md evaluation_results
-        if ! git diff-index --quiet HEAD; then
-          git commit -m 'Update README with metrics and test results'
-          
-          # Pull the latest changes from the remote branch
-          {
-            git pull --rebase
-          } || {
-            echo "Conflicts detected during rebase. Aborting rebase."
-            git rebase --abort
-            exit 1
-          }
-          
-          # Push the combined changes to the remote branch
-          git push
-        else
-          echo "No changes to commit"
-        fi
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
+        git add .
+        git commit -m 'Update DVC data with new model'
+        git pull --rebase
+        git push
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
