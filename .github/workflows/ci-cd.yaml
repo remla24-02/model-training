@@ -86,6 +86,7 @@ jobs:
           data
           models
           evaluation
+          evaluation_results
           README.md
         key: ${{ runner.os }}-pipeline-${{ github.sha }}
         restore-keys: |
@@ -137,6 +138,7 @@ jobs:
           data
           models
           evaluation
+          evaluation_results
           README.md
         key: ${{ runner.os }}-pipeline-${{ github.sha }}
         restore-keys: |
@@ -165,7 +167,7 @@ jobs:
         sed -i "s|!\[Test Status\](.*)|![Test Status](${badge_url})|" README.md
 
         sed -i '/### Test Results/,$d' README.md
-    
+
     - name: Cache files
       uses: actions/cache@v2
       with:
@@ -174,11 +176,11 @@ jobs:
           data
           models
           evaluation
+          evaluation_results
           README.md
         key: ${{ runner.os }}-pipeline-${{ github.sha }}
         restore-keys: |
           ${{ runner.os }}-pipeline-
-
 
   commit_and_push:
     runs-on: ubuntu-latest
@@ -192,7 +194,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: |
-          evaluation
+          evaluation_results
           README.md
         key: ${{ runner.os }}-pipeline-${{ github.sha }}
         restore-keys: |
