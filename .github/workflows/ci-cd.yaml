@@ -86,6 +86,7 @@ jobs:
           data/
           models/
           evaluation/
+          README.md
 
   test:
     runs-on: ubuntu-latest
