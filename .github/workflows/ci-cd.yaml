@@ -64,7 +64,7 @@ jobs:
     - name: Extract metrics and update README
       id: update-readme-metrics
       run: |
-        metrics=$(cat evaluation_results/metrics.json | jq -r 'to_entries|map("\(.key)=\(.value)")|.[]')
+        metrics=$(jq -r 'to_entries|map("\(.key)=\(.value|tostring|match("^[0-9]+(\.[0-9]+)?$")|.[0:4])")|.[]' evaluation_results/metrics.json)
         for metric in $metrics; do
           key=$(echo $metric | cut -d'=' -f1)
           value=$(echo $metric | cut -d'=' -f2)
@@ -73,9 +73,9 @@ jobs:
           sed -i "s|!\[${key}\](.*)|![${key}](${badge_url})|" README.md
         done
         # Update confusion matrix, ROC curve, and precision-recall plot URLs
-        sed -i "s|!\[Confusion Matrix\](.*)|![Confusion Matrix](https://raw.githubusercontent.com/${{ github.repository }}/${GITHUB_REF_NAME}/evaluation_results/plots/cm.png)|" README.md
-        sed -i "s|!\[ROC Curve\](.*)|![ROC Curve](https://raw.githubusercontent.com/${{ github.repository }}/${GITHUB_REF_NAME}/evaluation_results/plots/roc.png)|" README.md
-        sed -i "s|!\[Precision-Recall\](.*)|![Precision-Recall](https://raw.githubusercontent.com/${{ github.repository }}/${GITHUB_REF_NAME}/evaluation_results/plots/prc.png)|" README.md
+        sed -i "s|!\[Confusion Matrix\](.*)|![Confusion Matrix](https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/evaluation_results/plots/cm.png)|" README.md
+        sed -i "s|!\[ROC Curve\](.*)|![ROC Curve](https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/evaluation_results/plots/roc.png)|" README.md
+        sed -i "s|!\[Precision-Recall\](.*)|![Precision-Recall](https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/evaluation_results/plots/prc.png)|" README.md
 
     - name: Save artifacts
       uses: actions/upload-artifact@v3
@@ -150,16 +150,12 @@ jobs:
         # Determine if tests passed or failed
         if grep -q 'FAILED' pytest_output.txt; then
           badge_url="https://img.shields.io/badge/tests-failed-red"
-          test_summary=$(grep -E 'FAILED|ERROR' pytest_output.txt)
         else
           badge_url="https://img.shields.io/badge/tests-passed-brightgreen"
-          test_summary="All tests passed successfully!"
         fi
 
-        # Update test results badge and summary to README
+        # Update test results badge in README
         sed -i "s|!\[Test Status\](.*)|![Test Status](${badge_url})|" README.md
-
-        sed -i '/### Test Results/,$d' README.md
 
     - name: Save artifacts
       uses: actions/upload-artifact@v3
