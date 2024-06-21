@@ -40,7 +40,6 @@ jobs:
         key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
 
     - name: Install dependencies
-      if: steps.load-poetry-cache.outputs.cache-hit != 'true'
       run: poetry install --no-interaction --no-root
 
     - name: Set up DVC remote with AWS credentials
@@ -78,19 +77,15 @@ jobs:
         sed -i "s|!\[ROC Curve\](.*)|![ROC Curve](https://raw.githubusercontent.com/${{ github.repository }}/${GITHUB_REF_NAME}/evaluation_results/plots/roc.png)|" README.md
         sed -i "s|!\[Precision-Recall\](.*)|![Precision-Recall](https://raw.githubusercontent.com/${{ github.repository }}/${GITHUB_REF_NAME}/evaluation_results/plots/prc.png)|" README.md
 
-    - name: Cache files
-      uses: actions/cache@v2
+    - name: Save artifacts
+      uses: actions/upload-artifact@v3
       with:
+        name: pipeline-artifacts
         path: |
-          .dvc/cache
-          data
-          models
-          evaluation
-          evaluation_results
-          README.md
-        key: ${{ runner.os }}-pipeline-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-pipeline-
+          evaluation_results/
+          data/
+          models/
+          evaluation/
 
   test:
     runs-on: ubuntu-latest
@@ -121,7 +116,6 @@ jobs:
         key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
 
     - name: Install dependencies
-      if: steps.load-poetry-cache.outputs.cache-hit != 'true'
       run: poetry install --no-interaction --no-root
 
     - name: Set up DVC remote with AWS credentials
@@ -130,19 +124,11 @@ jobs:
         dvc remote modify aws_s3 access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
         dvc remote modify aws_s3 secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-    - name: Restore cache
-      uses: actions/cache@v2
+    - name: Download artifacts
+      uses: actions/download-artifact@v3
       with:
-        path: |
-          .dvc/cache
-          data
-          models
-          evaluation
-          evaluation_results
-          README.md
-        key: ${{ runner.os }}-pipeline-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-pipeline-
+        name: pipeline-artifacts
+        path: .
 
     - name: Run tests
       id: run-tests
@@ -150,6 +136,12 @@ jobs:
         source .venv/bin/activate
         pytest tests > pytest_output.txt
       continue-on-error: true
+
+    - name: Save test output
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-output
+        path: pytest_output.txt
 
     - name: Extract test results and update README
       id: update-readme-tests
@@ -168,19 +160,13 @@ jobs:
 
         sed -i '/### Test Results/,$d' README.md
 
-    - name: Cache files
-      uses: actions/cache@v2
+    - name: Save artifacts
+      uses: actions/upload-artifact@v3
       with:
+        name: updated-files
         path: |
-          .dvc/cache
-          data
-          models
-          evaluation
-          evaluation_results
           README.md
-        key: ${{ runner.os }}-pipeline-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-pipeline-
+          evaluation_results/
 
   commit_and_push:
     runs-on: ubuntu-latest
@@ -190,15 +176,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Restore cache
-      uses: actions/cache@v2
+    - name: Download updated files
+      uses: actions/download-artifact@v3
       with:
-        path: |
-          evaluation_results
-          README.md
-        key: ${{ runner.os }}-pipeline-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-pipeline-
+        name: updated-files
+        path: .
 
     - name: Commit and push changes
       run: |
@@ -256,7 +238,6 @@ jobs:
         key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
 
     - name: Install dependencies
-      if: steps.load-poetry-cache.outputs.cache-hit != 'true'
       run: poetry install --no-interaction --no-root
 
     - name: Set up DVC remote with AWS credentials
@@ -265,17 +246,16 @@ jobs:
         dvc remote modify aws_s3 access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
         dvc remote modify aws_s3 secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-    - name: Restore DVC cache
-      uses: actions/cache@v2
+    - name: Download artifacts
+      uses: actions/download-artifact@v3
       with:
-        path: |
-          .dvc/cache
-          data
-          models
-          evaluation
-        key: ${{ runner.os }}-pipeline-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-pipeline-
+        name: pipeline-artifacts
+        path: .
+
+    - name: Restore DVC cache
+      run: |
+        source .venv/bin/activate
+        dvc pull
 
     - name: Add changes to DVC and push
       run: |
