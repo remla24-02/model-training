@@ -171,6 +171,7 @@ jobs:
   commit_and_push:
     runs-on: ubuntu-latest
     needs: [run_model_pipeline, test]
+    if: github.event_name != 'pull_request'
 
     steps:
     - name: Checkout code
