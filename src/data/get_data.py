@@ -43,10 +43,10 @@ def main():
 
     # only keep the first 20000 lines of each file
     for file in files_to_pull:
-        with open(file, 'r') as f:
+        with open(file, 'r', encoding='utf-8') as f:
             lines = [f.readline() for _ in range(20000)]
 
-        with open(file, 'w') as f:
+        with open(file, 'w', encoding='utf-8') as f:
             f.writelines(lines)
 
 
