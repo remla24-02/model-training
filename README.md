@@ -1,5 +1,5 @@
 ![Pylint Score](https://img.shields.io/badge/pylint--)
-![Ruff Issues](https://img.shields.io/badge/ruff--)
+![Ruff Issues](https://img.shields.io/badge/ruff-0_issues-brightgreen)
 
 ![accuracy](https://img.shields.io/badge/accuracy-0.5895-blue)
 ![precision](https://img.shields.io/badge/precision-0.8015-blue)
