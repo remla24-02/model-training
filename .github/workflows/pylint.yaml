@@ -47,7 +47,7 @@ jobs:
         echo "Linting score: ${{ steps.extract_pylint_score.outputs.score }}"
 
     - name: Determine pylint badge color
-      id: badge_color
+      id: pylint_badge_color
       run: |
         score=${{ steps.extract_pylint_score.outputs.score }}
         if (( $(echo "$score > 9" |bc -l) )); then
