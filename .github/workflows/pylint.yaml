@@ -71,7 +71,7 @@ jobs:
         # Update the badge URL in the README
         sed -i 's|!\[Ruff Issues\](.*)|![Ruff Issues]('"${badge_url}"')|' README.md || echo "![Ruff Issues](${badge_url})" >> README.md
 
-        - name: Run pylint and save results
+    - name: Run pylint and save results
       id: run_pylint
       run: |
         pylint src/ > pylint_report.txt || true
