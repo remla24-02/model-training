@@ -6,7 +6,6 @@ import random
 import numpy as np
 import tensorflow as tf
 from joblib import dump, load
-import os
 
 # type: ignore # pylint: disable=import-error
 from keras.layers import Conv1D, Dense, Dropout, Embedding, Flatten, MaxPooling1D
