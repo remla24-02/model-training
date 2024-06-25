@@ -36,7 +36,7 @@ jobs:
         pylint src/ | tee pylint_report.txt
 
     - name: Extract pylint score
-      id: extract_score
+      id: extract_pylint_score
       run: |
         score=$(grep 'rated at' pylint_report.txt | sed -n 's/.* \([0-9]*\.[0-9]*\)\/10.*/\1/p')
         echo "::set-output name=score::$score"
@@ -44,12 +44,12 @@ jobs:
     - name: Set pylint summary name
       if: always()
       run: |
-        echo "Linting score: ${{ steps.extract_score.outputs.score }}"
+        echo "Linting score: ${{ steps.extract_pylint_score.outputs.score }}"
 
     - name: Determine pylint badge color
       id: badge_color
       run: |
-        score=${{ steps.extract_score.outputs.score }}
+        score=${{ steps.extract_pylint_score.outputs.score }}
         if (( $(echo "$score > 9" |bc -l) )); then
           color=brightgreen
         elif (( $(echo "$score >= 7" |bc -l) )); then
