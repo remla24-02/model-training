@@ -1,10 +1,10 @@
 ![Pylint Score](https://img.shields.io/badge/pylint-9.89-brightgreen)
 
-![accuracy](https://img.shields.io/badge/accuracy-0.5738-blue)
-![precision](https://img.shields.io/badge/precision-0.8116-blue)
-![recall](https://img.shields.io/badge/recall-0.0726-blue)
-![f1](https://img.shields.io/badge/f1-0.1332-blue)
-![roc_auc](https://img.shields.io/badge/roc_auc-0.5294-blue)
+![accuracy](https://img.shields.io/badge/accuracy-0.5895-blue)
+![precision](https://img.shields.io/badge/precision-0.8015-blue)
+![recall](https://img.shields.io/badge/recall-0.1203-blue)
+![f1](https://img.shields.io/badge/f1-0.2092-blue)
+![roc_auc](https://img.shields.io/badge/roc_auc-0.5479-blue)
 
 ![Test Status](https://img.shields.io/badge/tests-passed-brightgreen)
 
@@ -135,10 +135,10 @@ dvc plots show
 ```
 
 ### Confusion Matric
-![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/dvc_rework/evaluation_results/plots/roc.png)
+![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/add-ruff/evaluation_results/plots/roc.png)
 
 ### ROC Curve
-![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/dvc_rework/evaluation_results/plots/roc.png)
+![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/add-ruff/evaluation_results/plots/roc.png)
 
 ### Precision-Recall
-![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/dvc_rework/evaluation_results/plots/roc.png)
+![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/add-ruff/evaluation_results/plots/roc.png)
