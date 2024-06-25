@@ -29,44 +29,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install pylint ruff
 
-    - name: Run pylint and save results
-      id: run_pylint
-      run: |
-        pylint src/ > pylint_report.txt || true
-        pylint src/ | tee pylint_report.txt
-
-    - name: Extract pylint score
-      id: extract_pylint_score
-      run: |
-        score=$(grep 'rated at' pylint_report.txt | sed -n 's/.* \([0-9]*\.[0-9]*\)\/10.*/\1/p')
-        echo "::set-output name=score::$score"
-
-    - name: Set pylint summary name
-      if: always()
-      run: |
-        echo "Linting score: ${{ steps.extract_pylint_score.outputs.score }}"
-
-    - name: Determine pylint badge color
-      id: pylint_badge_color
-      run: |
-        score=${{ steps.extract_pylint_score.outputs.score }}
-        if (( $(echo "$score > 9" |bc -l) )); then
-          color=brightgreen
-        elif (( $(echo "$score >= 7" |bc -l) )); then
-          color=orange
-        else
-          color=red
-        fi
-        echo "::set-output name=color::$color"
-
-    - name: Update README with pylint badge
-      run: |
-        score=${{ steps.extract_pylint_score.outputs.score }}
-        color=${{ steps.pylint_badge_color.outputs.color }}
-        badge_url="https://img.shields.io/badge/pylint-${score}-${color}"
-        # Update the badge URL in the README
-        sed -i 's|!\[Pylint Score\](.*)|![Pylint Score]('"${badge_url}"')|' README.md || echo "![Pylint Score](${badge_url})" >> README.md
-
     - name: Run ruff with fix
       run: |
         ruff check src/ --fix
@@ -108,6 +70,44 @@ jobs:
         badge_url="https://img.shields.io/badge/ruff-${issues}_issues-${color}"
         # Update the badge URL in the README
         sed -i 's|!\[Ruff Issues\](.*)|![Ruff Issues]('"${badge_url}"')|' README.md || echo "![Ruff Issues](${badge_url})" >> README.md
+
+        - name: Run pylint and save results
+      id: run_pylint
+      run: |
+        pylint src/ > pylint_report.txt || true
+        pylint src/ | tee pylint_report.txt
+
+    - name: Extract pylint score
+      id: extract_pylint_score
+      run: |
+        score=$(grep 'rated at' pylint_report.txt | sed -n 's/.* \([0-9]*\.[0-9]*\)\/10.*/\1/p')
+        echo "::set-output name=score::$score"
+
+    - name: Set pylint summary name
+      if: always()
+      run: |
+        echo "Linting score: ${{ steps.extract_pylint_score.outputs.score }}"
+
+    - name: Determine pylint badge color
+      id: pylint_badge_color
+      run: |
+        score=${{ steps.extract_pylint_score.outputs.score }}
+        if (( $(echo "$score > 9" |bc -l) )); then
+          color=brightgreen
+        elif (( $(echo "$score >= 7" |bc -l) )); then
+          color=orange
+        else
+          color=red
+        fi
+        echo "::set-output name=color::$color"
+
+    - name: Update README with pylint badge
+      run: |
+        score=${{ steps.extract_pylint_score.outputs.score }}
+        color=${{ steps.pylint_badge_color.outputs.color }}
+        badge_url="https://img.shields.io/badge/pylint-${score}-${color}"
+        # Update the badge URL in the README
+        sed -i 's|!\[Pylint Score\](.*)|![Pylint Score]('"${badge_url}"')|' README.md || echo "![Pylint Score](${badge_url})" >> README.md
 
     - name: Commit and push changes
       run: |
