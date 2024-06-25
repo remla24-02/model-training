@@ -2,13 +2,16 @@
 Define models for predictions.
 """
 import random
+
 import numpy as np
 import tensorflow as tf
+from joblib import dump, load
+
+# type: ignore # pylint: disable=import-error
+from keras.layers import Conv1D, Dense, Dropout, Embedding, Flatten, MaxPooling1D
+
 # type: ignore # pylint: disable=import-error
 from keras.models import Sequential
-# type: ignore # pylint: disable=import-error
-from keras.layers import Dense, Dropout, Embedding, Conv1D, MaxPooling1D, Flatten
-from joblib import dump, load
 
 
 def _get_parameters(random_state=42, epoch=1, batch_size=5000):
