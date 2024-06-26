@@ -4,9 +4,7 @@ Define models for predictions.
 import random
 import numpy as np
 import tensorflow as tf
-# type: ignore # pylint: disable=import-error
 from keras.models import Sequential
-# type: ignore # pylint: disable=import-error
 from keras.layers import Dense, Dropout, Embedding, Conv1D, MaxPooling1D, Flatten
 from joblib import dump, load
 

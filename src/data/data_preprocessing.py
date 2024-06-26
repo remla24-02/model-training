@@ -10,9 +10,8 @@ def main():
     """
     Preprocess data by using library lib-ml.
     """
-
-    data_preprocessing.preprocess(os.path.join(
-        'data', 'raw'), os.path.join('data', 'preprocessed'))
+    data_preprocessing.preprocess(
+        os.path.join('data', 'raw'), os.path.join('data', 'preprocessed'))
 
 
 if __name__ == '__main__':
