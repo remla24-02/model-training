@@ -1,4 +1,4 @@
-![Pylint Score](https://img.shields.io/badge/pylint-9.89-brightgreen)
+![Pylint Score](https://img.shields.io/badge/pylint-10.00-brightgreen)
 
 ![accuracy](https://img.shields.io/badge/accuracy-0.5961-blue)
 ![precision](https://img.shields.io/badge/precision-0.8694-blue)
