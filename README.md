@@ -1,10 +1,10 @@
 ![Pylint Score](https://img.shields.io/badge/pylint-10.00-brightgreen)
 
-![accuracy](https://img.shields.io/badge/accuracy-0.5961-blue)
-![precision](https://img.shields.io/badge/precision-0.8694-blue)
-![recall](https://img.shields.io/badge/recall-0.1239-blue)
-![f1](https://img.shields.io/badge/f1-0.2168-blue)
-![roc_auc](https://img.shields.io/badge/roc_auc-0.5543-blue)
+![accuracy](https://img.shields.io/badge/accuracy-0.5712-blue)
+![precision](https://img.shields.io/badge/precision-0.7514-blue)
+![recall](https://img.shields.io/badge/recall-0.0747-blue)
+![f1](https://img.shields.io/badge/f1-0.1358-blue)
+![roc_auc](https://img.shields.io/badge/roc_auc-0.5272-blue)
 
 ![Test Status](https://img.shields.io/badge/tests-passed-brightgreen)
 
