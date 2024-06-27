@@ -7,7 +7,7 @@ from pathlib import Path
 
 from joblib import dump, load
 
-from src.models.define_model import _get_parameters  # pylint: disable=C0413
+from src.models.define_model import _get_parameters
 
 path_root = Path(__file__).parents[2]
 sys.path.append(str(path_root))

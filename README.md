@@ -31,6 +31,11 @@ cd model
 poetry install --no-root
 ```
 
+If planning to run dev operation install with this command:
+``` console
+poetry install --with dev --no-root
+```
+
 This cloned the repository and installed all the packages into an environment.
 Next, open a new shell for the environment with the following command:
 ``` console
@@ -59,7 +64,12 @@ poetry run python3 src/models/get_model.py
 
 This will download a pretrained model to the `models` folder under root.
 
-Next, for the code quality, Pylint and Ruff are used which can be run in the poetry shell as:
+Next, for the code quality, Pylint and Ruff are used which can be run in the poetry shell.
+Pylint has been configured to enable all checks except for the import errors as this is common with Tensorflow Keras.
+Additionally, the settings have been tweaked to be slightly more lenient with passing data as ML has a lot of different sources that many methods use. 
+Lastly, we added a rule that checks if a random seed is being set anywhere in the code for `random`, `np`, and `tf`.   
+Pylint can be run in the poetry shell (assuming dev dependencies are installed):
+
 
 ``` console
 pylint src

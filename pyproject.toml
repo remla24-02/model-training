@@ -82,8 +82,8 @@ priority = "supplemental"
 tensorrt = ["tensorrt-cu12", "tensorrt-cu12-bindings", "tensorrt-cu12-libs"]
 
 [tool.poetry.group.dev.dependencies]
-pylint = "^3.1.0"
-pytest = "^8.2.1"
+pylint = "3.2.3"
+pytest = "8.2.2"
 ruff = "^0.4.10"
 
 [build-system]
