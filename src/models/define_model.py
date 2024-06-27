@@ -4,8 +4,10 @@ Define models for predictions.
 import random
 import numpy as np
 import tensorflow as tf
-from keras.models import Sequential  # type: ignore # pylint: disable=import-error
-from keras.layers import Dense, Dropout, Embedding, Conv1D, MaxPooling1D, Flatten  # type: ignore # pylint: disable=import-error
+# type: ignore # pylint: disable=import-error
+from keras.models import Sequential
+# type: ignore # pylint: disable=import-error
+from keras.layers import Dense, Dropout, Embedding, Conv1D, MaxPooling1D, Flatten
 from joblib import dump, load
 
 
@@ -27,7 +29,7 @@ def _get_parameters(random_state=42, epoch=1, batch_size=5000):
     return params
 
 
-def main(params=None):
+def main(params=None, model_name='defined_model', preprocessed_folder='data/preprocessed'):
     """
     Define the model and add the layers.
     """
@@ -35,7 +37,7 @@ def main(params=None):
     if params is None:
         params = _get_parameters()
 
-    char_index = load('data/preprocessed/char_index.joblib')
+    char_index = load(f'{preprocessed_folder}/char_index.joblib')
 
     np.random.seed(params['random_state'])
     tf.random.set_seed(params['random_state'])
@@ -77,8 +79,7 @@ def main(params=None):
 
     model.add(Dense(len(params['categories']) - 1, activation='sigmoid'))
 
-
-    dump(model, 'models/defined_model.joblib')
+    dump(model, f'models/{model_name}.joblib')
 
 
 if __name__ == "__main__":

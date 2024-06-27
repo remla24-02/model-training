@@ -1,93 +1,68 @@
-artifacts:
-  test-dataset:
-    type: dataset
-    path: data/raw/test.txt
-    desc: Test dataset
-  train-dataset:
-    type: dataset
-    path: data/raw/train.txt
-    desc: Train dataset
-  validation-dataset:
-    type: dataset
-    path: data/raw/val.txt
-    desc: Validation dataset
-  model:
-    type: model
-    path: models/trained_model.joblib
-    desc: Trained model
 stages:
   get_data:
-    cmd: python src/data/get_data.py
+    cmd: PYTHONPATH=. python src/data/get_data.py
+    outs:
+      - data/raw/train.txt
+      - data/raw/test.txt
+      - data/raw/val.txt
+
   preprocess:
-    cmd: python src/data/data_preprocessing.py
+    cmd: PYTHONPATH=. python src/data/data_preprocessing.py
     deps:
-    - data/raw/train.txt
-    - data/raw/test.txt
-    - data/raw/val.txt
+      - data/raw/train.txt
+      - data/raw/test.txt
+      - data/raw/val.txt
     outs:
-    - data/preprocessed/preprocessed_x_train.joblib
-    - data/preprocessed/preprocessed_y_train.joblib
-    - data/preprocessed/preprocessed_x_test.joblib
-    - data/preprocessed/preprocessed_y_test.joblib
-    - data/preprocessed/preprocessed_x_val.joblib
-    - data/preprocessed/preprocessed_y_val.joblib
-    - data/preprocessed/char_index.joblib
+      - data/preprocessed/preprocessed_x_train.joblib
+      - data/preprocessed/preprocessed_y_train.joblib
+      - data/preprocessed/preprocessed_x_test.joblib
+      - data/preprocessed/preprocessed_y_test.joblib
+      - data/preprocessed/preprocessed_x_val.joblib
+      - data/preprocessed/preprocessed_y_val.joblib
+      - data/preprocessed/char_index.joblib
+
   define_model:
-    cmd: python src/models/define_model.py
+    cmd: PYTHONPATH=. python src/models/define_model.py
     deps:
-    - data/preprocessed/char_index.joblib
+      - data/preprocessed/char_index.joblib
     outs:
-    - models/defined_model.joblib
+      - models/defined_model.joblib
+
   train_model:
-    cmd: python src/models/train_model.py
+    cmd: PYTHONPATH=. python src/models/train_model.py
     deps:
-    - models/defined_model.joblib
-    - data/preprocessed/preprocessed_x_train.joblib
-    - data/preprocessed/preprocessed_y_train.joblib
-    - data/preprocessed/preprocessed_x_val.joblib
-    - data/preprocessed/preprocessed_y_val.joblib
+      - models/defined_model.joblib
+      - data/preprocessed/preprocessed_x_train.joblib
+      - data/preprocessed/preprocessed_y_train.joblib
+      - data/preprocessed/preprocessed_x_val.joblib
+      - data/preprocessed/preprocessed_y_val.joblib
+    outs:
+      - models/trained_model.joblib
+
   evaluate_model:
-    cmd: python src/models/evaluate_model.py
+    cmd: PYTHONPATH=. python src/models/evaluate_model.py
     deps:
-    - models/trained_model.joblib
-    - data/preprocessed/preprocessed_x_test.joblib
-    - data/preprocessed/preprocessed_y_test.joblib
-metrics:
-- evaluation/metrics.json
+      - models/trained_model.joblib
+      - data/preprocessed/preprocessed_x_test.joblib
+      - data/preprocessed/preprocessed_y_test.joblib
+    outs:
+      - evaluation/metrics.json
+      - evaluation/plots/roc.json
+      - evaluation/plots/prc.json
+      - evaluation/plots/cm.json
+
 plots:
-- ROC:
-    template: simple
-    x: fpr
-    y:
-      evaluation/plots/sklearn/roc.json: tpr
-- Confusion-Matrix:
-    template: confusion
-    x: actual
-    y:
-      evaluation/plots/sklearn/cm.json: predicted
-- Precision-Recall:
-    template: simple
-    x: recall
-    y:
-      evaluation/plots/sklearn/prc.json: precision
-- evaluation/plots/sklearn/roc.json:
-    template: simple
-    x: fpr
-    y: tpr
-    title: Receiver operating characteristic (ROC)
-    x_label: False Positive Rate
-    y_label: True Positive Rate
-- evaluation/plots/sklearn/prc.json:
-    template: simple
-    x: recall
-    y: precision
-    title: Precision-Recall Curve
-    x_label: Recall
-    y_label: Precision
-- evaluation/plots/sklearn/cm.json:
-    template: confusion
-    x: actual
-    y: predicted
-    title: Confusion Matrix
-    x_label: True Label
-    y_label: Predicted Label
+  - ROC:
+      template: simple
+      x: fpr
+      y:
+        evaluation/plots/roc.json: tpr
+  - Precision-Recall:
+      template: simple
+      x: recall
+      y:
+        evaluation/plots/prc.json: precision
+  - Confusion-Matrix:
+      template: confusion
+      x: actual
+      y: predicted

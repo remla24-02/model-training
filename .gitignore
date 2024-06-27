@@ -10,4 +10,6 @@ __pycache__/
 venv
 
 data/preprocessed/*.joblib
+data/raw/*.txt
 models/old_model.joblib
+evaluation

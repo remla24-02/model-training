@@ -1,23 +1,6 @@
 import pytest
 import os
 
-from src.data.get_data import main as get_data
-
-
-@pytest.fixture(scope="module")
-def setup_data():
-    # Download the data
-    get_data()
-
-    # Yield to run the tests
-    yield
-
-    # Teardown the data
-    for data_type in ["train", "val", "test"]:
-        file_path = os.path.join("data", "raw", f"{data_type}.txt")
-        if os.path.exists(file_path):
-            os.remove(file_path)
-
 
 def get_data_ratio(data_type):
     # Track the total, legitimate and phishing marked urls
@@ -38,7 +21,7 @@ def get_data_ratio(data_type):
     return total, legitimate, phishing
 
 
-def test_train_data_ratio(setup_data):
+def test_train_data_ratio():
     # The legitimate and phishing should have a fair ratio and add up to the total together
     total, legitimate, phishing = get_data_ratio("train")
     assert total == legitimate + phishing
@@ -46,7 +29,7 @@ def test_train_data_ratio(setup_data):
     assert 0.4 < phishing / total < 0.6
 
 
-def test_val_data_ratio(setup_data):
+def test_val_data_ratio():
     # The legitimate and phishing should have a fair ratio and add up to the total together
     total, legitimate, phishing = get_data_ratio("val")
     assert total == legitimate + phishing
@@ -54,7 +37,7 @@ def test_val_data_ratio(setup_data):
     assert 0.4 < phishing / total < 0.6
 
 
-def test_test_data_ratio(setup_data):
+def test_test_data_ratio():
     # The legitimate and phishing should have a fair ratio and add up to the total together
     total, legitimate, phishing = get_data_ratio("test")
     assert total == legitimate + phishing

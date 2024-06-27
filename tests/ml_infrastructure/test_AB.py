@@ -1,10 +1,9 @@
 # Run the old and new models and compare the results.
 #
 # Path: tests/ml_infrastructure/test_AB.py
-import os
 import pytest
 from joblib import load
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from src.models.evaluate_model import evaluate_model
 from src.models.get_model import main as get_model
 
 METRIC_WEIGHTS = {
@@ -23,34 +22,19 @@ THRESHOLDS = {
 }
 
 
-@pytest.mark.skipif(not os.path.exists('models/trained_model.joblib'), reason="Trained model does not exist")
 def test_AB():
     new_model = load('models/trained_model.joblib')
-    get_model("old_model")
+    get_model("models/old_model.joblib")
     old_model = load('models/old_model.joblib')
 
     x_test = load('data/preprocessed/preprocessed_x_test.joblib')
     y_test = load('data/preprocessed/preprocessed_y_test.joblib')
 
-    y_pred_old = old_model.predict(x_test)
-    y_pred_binary_old = (y_pred_old > 0.5).astype(int).reshape(-1, 1)
+    metrics_old, _, _, _ = evaluate_model(
+        old_model, x_test, y_test, save_data=False)
 
-    y_pred_new = new_model.predict(x_test)
-    y_pred_binary_new = (y_pred_new > 0.5).astype(int).reshape(-1, 1)
-
-    metrics_old = {
-        'accuracy': accuracy_score(y_test, y_pred_binary_old),
-        'precision': precision_score(y_test, y_pred_binary_old),
-        'recall': recall_score(y_test, y_pred_binary_old),
-        'f1': f1_score(y_test, y_pred_binary_old)
-    }
-
-    metrics_new = {
-        'accuracy': accuracy_score(y_test, y_pred_binary_new),
-        'precision': precision_score(y_test, y_pred_binary_new),
-        'recall': recall_score(y_test, y_pred_binary_new),
-        'f1': f1_score(y_test, y_pred_binary_new)
-    }
+    metrics_new, _, _, _ = evaluate_model(
+        new_model, x_test, y_test, save_data=False)
 
     total_weight = sum(METRIC_WEIGHTS.values())
     weighted_score = 0
@@ -64,7 +48,7 @@ def test_AB():
             weighted_score += weight * (new_value / old_value)
 
     assert weighted_score / total_weight >= 1, f"New model's overall performance did not meet expectations. " \
-                                               f"Weighted score: {weighted_score / total_weight}"
+        f"Weighted score: {weighted_score / total_weight}"
 
     print(f"Old Model Metrics: {metrics_old}")
     print(f"New Model Metrics: {metrics_new}")
