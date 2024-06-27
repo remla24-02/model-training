@@ -3,8 +3,9 @@ Download the trained model from the DVC remote storage.
 """
 
 import os
-import yaml
+
 import boto3
+import yaml
 from botocore import UNSIGNED
 from botocore.config import Config
 

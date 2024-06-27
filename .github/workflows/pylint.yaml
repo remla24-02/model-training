@@ -26,7 +26,49 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pylint
+        pip install pylint ruff
+
+    - name: Run ruff with fix
+      run: |
+        ruff check src/ --fix
+        ruff check src/ > ruff_report.txt || true
+        ruff check src/ | tee ruff_report.txt
+
+    - name: Extract ruff issues count
+      id: extract_ruff_issues
+      run: |
+        if grep -q "All checks passed!" ruff_report.txt; then
+          issues=0
+        else
+          issues=$(grep -o '^\[.*\]' ruff_report.txt | wc -l)
+        fi
+        echo "::set-output name=issues::$issues"
+    
+    - name: Set ruff summary name
+      if: always()
+      run: |
+        echo "Ruff issues count: ${{ steps.extract_ruff_issues.outputs.issues }}"
+
+    - name: Determine ruff badge color
+      id: ruff_badge_color
+      run: |
+        issues=${{ steps.extract_ruff_issues.outputs.issues }}
+        if (( $issues == 0 )); then
+          color=brightgreen
+        elif (( $issues <= 5 )); then
+          color=yellow
+        else
+          color=red
+        fi
+        echo "::set-output name=color::$color"
+
+    - name: Update README with ruff badge
+      run: |
+        issues=${{ steps.extract_ruff_issues.outputs.issues }}
+        color=${{ steps.ruff_badge_color.outputs.color }}
+        badge_url="https://img.shields.io/badge/ruff-${issues}_issues-${color}"
+        # Update the badge URL in the README
+        sed -i 's|!\[Ruff Issues\](.*)|![Ruff Issues]('"${badge_url}"')|' README.md || echo "![Ruff Issues](${badge_url})" >> README.md
 
     - name: Run pylint and save results
       id: run_pylint
@@ -35,20 +77,20 @@ jobs:
         pylint src/ | tee pylint_report.txt
 
     - name: Extract pylint score
-      id: extract_score
+      id: extract_pylint_score
       run: |
         score=$(grep 'rated at' pylint_report.txt | sed -n 's/.* \([0-9]*\.[0-9]*\)\/10.*/\1/p')
         echo "::set-output name=score::$score"
 
-    - name: Set summary name
+    - name: Set pylint summary name
       if: always()
       run: |
-        echo "Linting score: ${{ steps.extract_score.outputs.score }}"
+        echo "Linting score: ${{ steps.extract_pylint_score.outputs.score }}"
 
-    - name: Determine badge color
-      id: badge_color
+    - name: Determine pylint badge color
+      id: pylint_badge_color
       run: |
-        score=${{ steps.extract_score.outputs.score }}
+        score=${{ steps.extract_pylint_score.outputs.score }}
         if (( $(echo "$score > 9" |bc -l) )); then
           color=brightgreen
         elif (( $(echo "$score >= 7" |bc -l) )); then
@@ -60,16 +102,19 @@ jobs:
 
     - name: Update README with pylint badge
       run: |
-        score=${{ steps.extract_score.outputs.score }}
-        color=${{ steps.badge_color.outputs.color }}
+        score=${{ steps.extract_pylint_score.outputs.score }}
+        color=${{ steps.pylint_badge_color.outputs.color }}
         badge_url="https://img.shields.io/badge/pylint-${score}-${color}"
         # Update the badge URL in the README
         sed -i 's|!\[Pylint Score\](.*)|![Pylint Score]('"${badge_url}"')|' README.md || echo "![Pylint Score](${badge_url})" >> README.md
+
+    - name: Commit and push changes
+      run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git add README.md
+        git add README.md src/
         if ! git diff-index --quiet HEAD; then
-          git commit -m 'Update README with pylint score badge'
+          git commit -m 'Apply lint fixes and update README badges'
           git push
         else
           echo "No changes to commit"

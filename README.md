@@ -1,4 +1,5 @@
 ![Pylint Score](https://img.shields.io/badge/pylint-10.00-brightgreen)
+![Ruff Issues](https://img.shields.io/badge/ruff-0_issues-brightgreen)
 
 ![accuracy](https://img.shields.io/badge/accuracy-0.6024-blue)
 ![precision](https://img.shields.io/badge/precision-0.7377-blue)
@@ -58,13 +59,19 @@ poetry run python3 src/models/get_model.py
 
 This will download a pretrained model to the `models` folder under root.
 
-Next, for the code quality Pylint is used which can be run in the poetry shell as:
+Next, for the code quality, Pylint and Ruff are used which can be run in the poetry shell as:
 
 ``` console
 pylint src
 ```
 
-This will show all code smells and provide a score for the codebase
+and
+
+``` console
+ruff check src --fix
+```
+
+This will show all code smells and provide a score for the codebase. Ruff will also fix the issues it is able to fix.
 
 Lastly, all the ML tests can be run with:
 (note that this messes with saved data and models)
