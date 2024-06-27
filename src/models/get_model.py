@@ -34,7 +34,7 @@ def main(model_name: str = 'trained_model'):
             if out['path'] == 'models/trained_model.joblib':
                 md5_hash = out['md5']
                 key = f'data/files/md5/{md5_hash[:2]}/{md5_hash[2:]}'
-                output_file = os.path.join('models', f'{model_name}.joblib')
+                output_file = os.path.join(f'{model_name}')
 
                 # Ensure directory exists
                 os.makedirs(os.path.dirname(output_file), exist_ok=True)
