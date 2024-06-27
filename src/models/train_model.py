@@ -2,8 +2,9 @@
 Train models for predictions.
 """
 
-from pathlib import Path
 import sys
+from pathlib import Path
+
 from joblib import dump, load
 
 from src.models.define_model import _get_parameters

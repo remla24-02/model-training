@@ -2,15 +2,23 @@
 Evaluate the trained model using various metrics and save the results to files.
 """
 
-import os
 import json
+import os
+
+import matplotlib.colors as mcolors
+import matplotlib.pyplot as plt
 import numpy as np
 from joblib import load
-import matplotlib.pyplot as plt
-import matplotlib.colors as mcolors
-from sklearn.metrics import (accuracy_score, roc_auc_score, recall_score,
-                             f1_score, precision_score, roc_curve,
-                             precision_recall_curve, confusion_matrix)
+from sklearn.metrics import (
+    accuracy_score,
+    confusion_matrix,
+    f1_score,
+    precision_recall_curve,
+    precision_score,
+    recall_score,
+    roc_auc_score,
+    roc_curve,
+)
 
 
 def save_metrics(metrics, filepath):
@@ -53,7 +61,7 @@ def plot_and_save_roc(y_test, y_pred_binary, filepath):
     - filepath (str): The file path to save the ROC curve plot.
 
     Returns:
-    - dict: A dictionary containing the false positive rates (fpr) 
+    - dict: A dictionary containing the false positive rates (fpr)
             and true positive rates (tpr) as lists.
 
     """

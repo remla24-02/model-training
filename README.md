@@ -1,12 +1,13 @@
 ![Pylint Score](https://img.shields.io/badge/pylint-10.00-brightgreen)
+![Ruff Issues](https://img.shields.io/badge/ruff-0_issues-brightgreen)
 
-![accuracy](https://img.shields.io/badge/accuracy-0.5712-blue)
-![precision](https://img.shields.io/badge/precision-0.7514-blue)
-![recall](https://img.shields.io/badge/recall-0.0747-blue)
-![f1](https://img.shields.io/badge/f1-0.1358-blue)
-![roc_auc](https://img.shields.io/badge/roc_auc-0.5272-blue)
+![accuracy](https://img.shields.io/badge/accuracy-0.6024-blue)
+![precision](https://img.shields.io/badge/precision-0.7377-blue)
+![recall](https://img.shields.io/badge/recall-0.1848-blue)
+![f1](https://img.shields.io/badge/f1-0.2955-blue)
+![roc_auc](https://img.shields.io/badge/roc_auc-0.5654-blue)
 
-![Test Status](https://img.shields.io/badge/tests-passed-brightgreen)
+![Test Status](https://img.shields.io/badge/tests-failed-red)
 
 # REMLA Team 2 Model
 This is Team 2's repository for Assignment A1 for Release Engineering for Machine Learning Applications 2023/24.  
@@ -63,16 +64,24 @@ poetry run python3 src/models/get_model.py
 
 This will download a pretrained model to the `models` folder under root.
 
-Next, for the code quality Pylint is used.
+Next, for the code quality, Pylint and Ruff are used which can be run in the poetry shell.
 Pylint has been configured to enable all checks except for the import errors as this is common with Tensorflow Keras.
 Additionally, the settings have been tweaked to be slightly more lenient with passing data as ML has a lot of different sources that many methods use. 
 Lastly, we added a rule that checks if a random seed is being set anywhere in the code for `random`, `np`, and `tf`.   
 Pylint can be run in the poetry shell (assuming dev dependencies are installed):
+
+
 ``` console
 pylint src
 ```
 
-This will show all code smells and provide a score for the codebase
+and
+
+``` console
+ruff check src --fix
+```
+
+This will show all code smells and provide a score for the codebase. Ruff will also fix the issues it is able to fix.
 
 Lastly, all the ML tests can be run with:
 (note that this messes with saved data and models)
@@ -143,10 +152,10 @@ dvc plots show
 ```
 
 ### Confusion Matric
-![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/new_ML_rule/evaluation_results/plots/roc.png)
+![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/dvc_rework/evaluation_results/plots/roc.png)
 
 ### ROC Curve
-![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/new_ML_rule/evaluation_results/plots/roc.png)
+![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/dvc_rework/evaluation_results/plots/roc.png)
 
 ### Precision-Recall
-![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/new_ML_rule/evaluation_results/plots/roc.png)
+![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/dvc_rework/evaluation_results/plots/roc.png)
