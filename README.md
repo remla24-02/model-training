@@ -1,12 +1,12 @@
 ![Pylint Score](https://img.shields.io/badge/pylint-9.70-brightgreen)
 
-![accuracy](https://img.shields.io/badge/accuracy-0.5725-blue)
-![precision](https://img.shields.io/badge/precision-0.8442-blue)
-![recall](https://img.shields.io/badge/recall-0.0648-blue)
-![f1](https://img.shields.io/badge/f1-0.1204-blue)
-![roc_auc](https://img.shields.io/badge/roc_auc-0.5275-blue)
+![accuracy](https://img.shields.io/badge/accuracy-0.5975-blue)
+![precision](https://img.shields.io/badge/precision-0.7720-blue)
+![recall](https://img.shields.io/badge/recall-0.1534-blue)
+![f1](https://img.shields.io/badge/f1-0.2560-blue)
+![roc_auc](https://img.shields.io/badge/roc_auc-0.5581-blue)
 
-![Test Status](https://img.shields.io/badge/tests-passed-brightgreen)
+![Test Status](https://img.shields.io/badge/tests-failed-red)
 
 # REMLA Team 2 Model
 This is Team 2's repository for Assignment A1 for Release Engineering for Machine Learning Applications 2023/24.  
