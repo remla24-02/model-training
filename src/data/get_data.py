@@ -1,52 +1,63 @@
 """
-Download and extract training, testing and validation data.
+Download the raw data from the DVC remote storage.
 """
 
 import os
-import subprocess
-import sys
+import yaml
+import boto3
+from botocore import UNSIGNED
+from botocore.config import Config
 
 
-def pull_specific_files(files):
+def download_data(bucket_name, file_name, output_file):
     """
     Pull specific files from the DVC remote storage.
     """
-    dvc_repo_url = os.path.abspath('.')
-    try:
-        for file in files:
-            subprocess.run(["dvc", "get", dvc_repo_url, file,
-                            "-o", file, "--force"], check=True)
-        print("Successfully pulled the specified files.")
-    except subprocess.CalledProcessError as e:
-        print(f"Error pulling the specified files: {e}")
-        sys.exit(1)
+    s3 = boto3.client('s3', region_name='eu-north-1',
+                      config=Config(signature_version=UNSIGNED))
+    s3.download_file(bucket_name, file_name, output_file)
 
 
 def main():
     """
     Main function to ensure the raw data directory exists and pull the latest data.
     """
+    bucket_name = 'dvc-remla24-02'
     raw_data_dir = os.path.join('data', 'raw')
 
     # Ensure the raw data directory exists
     os.makedirs(raw_data_dir, exist_ok=True)
 
+    # Read the dvc.lock file
+    with open('dvc.lock', 'r', encoding='utf-8') as file:
+        dvc_lock_data = yaml.safe_load(file)
+
     # List of specific files to pull
     files_to_pull = [
-        os.path.join('data', 'raw', 'train.txt'),
-        os.path.join('data', 'raw', 'test.txt'),
-        os.path.join('data', 'raw', 'val.txt')
+        'data/raw/train.txt',
+        'data/raw/test.txt',
+        'data/raw/val.txt'
     ]
 
-    # Pull the specified files
-    pull_specific_files(files_to_pull)
+    # Iterate through each stage and download the outs for the specified files
+    for stage in dvc_lock_data['stages'].values():
+        for out in stage.get('outs', []):
+            if out['path'] in files_to_pull:
+                md5_hash = out['md5']
+                key = f'data/files/md5/{md5_hash[:2]}/{md5_hash[2:]}'
+                output_file = out['path']
 
-    # only keep the first 20000 lines of each file
+                # Ensure directory exists
+                os.makedirs(os.path.dirname(output_file), exist_ok=True)
+
+                download_data(bucket_name, key, output_file)
+
+    # Only keep the first 20000 lines of each file
     for file in files_to_pull:
-        with open(file, 'r') as f:
+        with open(file, 'r', encoding='utf-8') as f:
             lines = [f.readline() for _ in range(20000)]
 
-        with open(file, 'w') as f:
+        with open(file, 'w', encoding='utf-8') as f:
             f.writelines(lines)
 
 

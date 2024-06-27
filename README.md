@@ -1,13 +1,13 @@
-![Pylint Score](https://img.shields.io/badge/pylint-9.89-brightgreen)
+![Pylint Score](https://img.shields.io/badge/pylint-10.00-brightgreen)
 ![Ruff Issues](https://img.shields.io/badge/ruff-0_issues-brightgreen)
 
-![accuracy](https://img.shields.io/badge/accuracy-0.5895-blue)
-![precision](https://img.shields.io/badge/precision-0.8015-blue)
-![recall](https://img.shields.io/badge/recall-0.1203-blue)
-![f1](https://img.shields.io/badge/f1-0.2092-blue)
-![roc_auc](https://img.shields.io/badge/roc_auc-0.5479-blue)
+![accuracy](https://img.shields.io/badge/accuracy-0.6024-blue)
+![precision](https://img.shields.io/badge/precision-0.7377-blue)
+![recall](https://img.shields.io/badge/recall-0.1848-blue)
+![f1](https://img.shields.io/badge/f1-0.2955-blue)
+![roc_auc](https://img.shields.io/badge/roc_auc-0.5654-blue)
 
-![Test Status](https://img.shields.io/badge/tests-passed-brightgreen)
+![Test Status](https://img.shields.io/badge/tests-failed-red)
 
 # REMLA Team 2 Model
 This is Team 2's repository for Assignment A1 for Release Engineering for Machine Learning Applications 2023/24.  
@@ -142,10 +142,10 @@ dvc plots show
 ```
 
 ### Confusion Matric
-![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/add-ruff/evaluation_results/plots/roc.png)
+![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/dvc_rework/evaluation_results/plots/roc.png)
 
 ### ROC Curve
-![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/add-ruff/evaluation_results/plots/roc.png)
+![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/dvc_rework/evaluation_results/plots/roc.png)
 
 ### Precision-Recall
-![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/add-ruff/evaluation_results/plots/roc.png)
+![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/dvc_rework/evaluation_results/plots/roc.png)
