@@ -7,7 +7,7 @@
 ![f1](https://img.shields.io/badge/f1-0.1785-blue)
 ![roc_auc](https://img.shields.io/badge/roc_auc-0.5399-blue)
 
-![Test Status](https://img.shields.io/badge/tests-failed-red)
+![Test Status](https://img.shields.io/badge/tests-passed-green)
 
 # REMLA Team 2 Model
 This is Team 2's repository for Assignment A1 for Release Engineering for Machine Learning Applications 2023/24.  
@@ -152,10 +152,10 @@ dvc plots show
 ```
 
 ### Confusion Matric
-![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/main/evaluation_results/plots/roc.png)
+![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/main/evaluation_results/plots/cm.png)
 
 ### ROC Curve
 ![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/main/evaluation_results/plots/roc.png)
 
 ### Precision-Recall
-![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/main/evaluation_results/plots/roc.png)
+![ROC Curve](https://raw.githubusercontent.com/remla24-02/model-training/main/evaluation_results/plots/prc.png)
