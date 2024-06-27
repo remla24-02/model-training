@@ -2,11 +2,12 @@
 Define models for predictions.
 """
 import random
+
 import numpy as np
 import tensorflow as tf
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Embedding, Conv1D, MaxPooling1D, Flatten
 from joblib import dump, load
+from keras.layers import Conv1D, Dense, Dropout, Embedding, Flatten, MaxPooling1D
+from keras.models import Sequential
 
 
 def _get_parameters(random_state=42, epoch=1, batch_size=5000):
