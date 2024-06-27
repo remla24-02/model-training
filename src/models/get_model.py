@@ -1,3 +1,7 @@
+"""
+Download the trained model from the DVC remote storage.
+"""
+
 import os
 import yaml
 import boto3

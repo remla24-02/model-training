@@ -1,7 +1,10 @@
+"""
+Download the raw data from the DVC remote storage.
+"""
+
 import os
 import yaml
 import boto3
-import sys
 from botocore import UNSIGNED
 from botocore.config import Config
 
@@ -12,12 +15,7 @@ def download_data(bucket_name, file_name, output_file):
     """
     s3 = boto3.client('s3', region_name='eu-north-1',
                       config=Config(signature_version=UNSIGNED))
-    try:
-        s3.download_file(bucket_name, file_name, output_file)
-        print(f"Successfully downloaded {file_name} to {output_file}")
-    except Exception as e:
-        print(f"Error downloading {file_name}: {e}")
-        sys.exit(1)
+    s3.download_file(bucket_name, file_name, output_file)
 
 
 def main():
@@ -56,10 +54,10 @@ def main():
 
     # Only keep the first 20000 lines of each file
     for file in files_to_pull:
-        with open(file, 'r') as f:
+        with open(file, 'r', encoding='utf-8') as f:
             lines = [f.readline() for _ in range(20000)]
 
-        with open(file, 'w') as f:
+        with open(file, 'w', encoding='utf-8') as f:
             f.writelines(lines)
 
 
